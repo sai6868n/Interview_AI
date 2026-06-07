@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard — InterviewAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/leaderboard.css" />
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-scene">
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
+    <div class="bg-orb-3"></div>
+    <div class="bg-grid-lines"></div>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ═══════════════════════════════
+       SIDEBAR
+  ═══════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
+          <path d="M9 16 L12 12 L16 20 L20 10 L23 16"
+            stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="logo-name">Interview<span class="logo-accent">AI</span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+
+      <a href="dashboard.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+        Dashboard
+      </a>
+
+      <a href="index.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        </svg>
+        Analyze Interview
+      </a>
+
+      <a href="history.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        Interview History
+      </a>
+
+      <a href="recommendations.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        Recommendations
+      </a>
+
+      <a href="dashboard.html#tasks" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 11 12 14 22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Daily Tasks
+        <span class="nav-badge" id="taskBadge"></span>
+      </a>
+
+      <a href="leaderboard.html" class="sidebar-link active">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+          <path d="M4 22h16"/>
+          <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+          <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+          <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+        </svg>
+        Leaderboard
+      </a>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">Account</div>
+
+      <a href="profile.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        Profile
+      </a>
+
+      <a href="landing.html" class="sidebar-link logout-link" id="logoutLink">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar-sm" id="avatarSm">?</div>
+      <div class="user-info-sm">
+        <div class="user-name-sm" id="sidebarUserName">Loading...</div>
+        <div class="user-role-sm" id="sidebarUserEmail">—</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════
+       MAIN LAYOUT
+  ═══════════════════════════════ -->
+  <div class="layout">
+
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <span class="breadcrumb">InterviewAI / <span>Leaderboard</span></span>
+      </div>
+      <div class="header-right">
+        <button class="header-btn" title="Refresh rankings" id="refreshBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="1 4 1 10 7 10"/>
+            <path d="M3.51 15a9 9 0 1 0 .49-3.84"/>
+          </svg>
+        </button>
+        <a href="index.html" class="header-analyze-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          </svg>
+          New Analysis
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Arena Header -->
+      <div class="arena-header">
+        <div class="arena-tag">
+          <div class="arena-tag-dot"></div>
+          Global Rankings
+        </div>
+        <h1 class="arena-title">
+          The <span class="grad-gold">Champions</span> Arena
+        </h1>
+        <p class="arena-subtitle">
+          Compete with thousands of professionals worldwide. Sharpen your skills, climb the ranks, and prove your interview mastery.
+        </p>
+        <div class="arena-live-badge">
+          <div class="live-dot"></div>
+          Live Rankings · Updated every 5 minutes
+        </div>
+      </div>
+
+      <!-- Period Tabs -->
+      <div class="period-tabs" id="periodTabs">
+        <button class="period-tab active" data-period="weekly">Weekly</button>
+        <button class="period-tab" data-period="monthly">Monthly</button>
+        <button class="period-tab" data-period="alltime">All Time</button>
+      </div>
+
+      <!-- Stats Strip -->
+      <div class="stats-strip">
+        <div class="strip-card" style="--strip-accent:linear-gradient(90deg,#fbbf24,#f97316); --strip-icon-bg:rgba(251,191,36,0.1)">
+          <div class="strip-icon-wrap">🏆</div>
+          <div>
+            <div class="strip-label">Total Competitors</div>
+            <div class="strip-val" style="color:var(--gold)" id="statCompetitors">0</div>
+          </div>
+        </div>
+        <div class="strip-card" style="--strip-accent:linear-gradient(90deg,#00f5ff,#7c3aed); --strip-icon-bg:rgba(0,245,255,0.08)">
+          <div class="strip-icon-wrap">💡</div>
+          <div>
+            <div class="strip-label">Avg Confidence</div>
+            <div class="strip-val grad-text" id="statAvgConf">0%</div>
+          </div>
+        </div>
+        <div class="strip-card" style="--strip-accent:linear-gradient(90deg,#10b981,#3b82f6); --strip-icon-bg:rgba(16,185,129,0.08)">
+          <div class="strip-icon-wrap">🎤</div>
+          <div>
+            <div class="strip-label">Interviews This Week</div>
+            <div class="strip-val" style="color:var(--green)" id="statWeekly">0</div>
+          </div>
+        </div>
+        <div class="strip-card" style="--strip-accent:linear-gradient(90deg,#f43f5e,#8b5cf6); --strip-icon-bg:rgba(244,63,94,0.08)">
+          <div class="strip-icon-wrap">👑</div>
+          <div>
+            <div class="strip-label">Top Score</div>
+            <div class="strip-val" style="color:var(--pink)" id="statTopScore">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Podium: Top 3 -->
+      <div class="podium-section">
+        <div class="section-label">🥇 Top 3 Champions</div>
+        <div class="podium-grid" id="podiumGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Full Table -->
+      <div class="table-section">
+        <div class="section-label">📋 Full Rankings</div>
+
+        <!-- Toolbar -->
+        <div class="table-toolbar">
+          <div class="toolbar-left">
+            <div class="search-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+              </svg>
+              <input type="text" id="lbSearch" placeholder="Search by name or role…" />
+            </div>
+            <button class="filter-pill active" data-result="all"  id="filterAll">All</button>
+            <button class="filter-pill" data-result="selected"    id="filterSelected">✓ Selected</button>
+            <button class="filter-pill" data-result="not"         id="filterNot">✗ Not Selected</button>
+          </div>
+          <div class="toolbar-right">
+            <select class="sort-select" id="sortSelect">
+              <option value="confidence">Sort: Confidence ↓</option>
+              <option value="stress">Sort: Stress ↑</option>
+              <option value="interviews">Sort: Interviews ↓</option>
+              <option value="name">Sort: Name A–Z</option>
+            </select>
+            <div class="per-page-wrap">
+              Show
+              <select class="per-page-select" id="perPageSelect">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+              rows
+            </div>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="lb-table-wrap">
+          <div class="lb-table-head">
+            <span>Rank</span>
+            <span>User</span>
+            <span>Confidence</span>
+            <span>Stress</span>
+            <span>Result</span>
+            <span>Sessions</span>
+          </div>
+          <div class="lb-table-body" id="lbTableBody">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination" id="paginationBar">
+            <span id="paginationInfo">Showing 0–0 of 0</span>
+            <div class="page-btns" id="pageBtns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Grid: My Rank + Distribution -->
+      <div class="bottom-grid">
+
+        <!-- My Rank Card -->
+        <div class="my-rank-card">
+          <div class="my-rank-header">
+            <div>
+              <div class="my-rank-title">📍 Your Rank</div>
+              <div class="my-rank-subtitle">Your position in the global arena</div>
+            </div>
+            <div class="my-rank-pos" id="myRankPos">#—</div>
+          </div>
+          <div class="my-rank-body">
+            <div class="my-rank-stats">
+              <div class="my-rank-stat">
+                <div class="my-stat-label">Confidence</div>
+                <div class="my-stat-val" style="color:var(--cyan)" id="myConf">—</div>
+              </div>
+              <div class="my-rank-stat">
+                <div class="my-stat-label">Stress</div>
+                <div class="my-stat-val" style="color:var(--yellow)" id="myStress">—</div>
+              </div>
+              <div class="my-rank-stat">
+                <div class="my-stat-label">Sessions</div>
+                <div class="my-stat-val" style="color:var(--green)" id="mySessions">—</div>
+              </div>
+              <div class="my-rank-stat">
+                <div class="my-stat-label">Best Result</div>
+                <div class="my-stat-val" style="color:var(--green)" id="myResult">—</div>
+              </div>
+            </div>
+            <div class="rank-progress-section">
+              <div class="rank-progress-label">
+                <span>Progress to next rank</span>
+                <span id="rankProgressPct">0%</span>
+              </div>
+              <div class="rank-progress-track">
+                <div class="rank-progress-fill" id="rankProgressFill" style="width:0%"></div>
+              </div>
+              <p class="rank-progress-hint" id="rankProgressHint">Complete more interviews to rank up</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score Distribution Chart -->
+        <div class="dist-card">
+          <div class="dist-header">
+            <div class="dist-title">📊 Confidence Score Distribution</div>
+            <div class="dist-sub">How all competitors are spread across confidence brackets</div>
+          </div>
+          <div class="dist-body">
+            <div class="dist-bars" id="distBars">
+              <!-- Populated by JS -->
+            </div>
+            <div class="dist-legend">
+              <div class="dist-legend-item">
+                <div class="dist-legend-dot" style="background:linear-gradient(135deg,#00f5ff,#7c3aed)"></div>
+                Confidence Score
+              </div>
+              <div class="dist-legend-item">
+                <div class="dist-legend-dot" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)"></div>
+                Your bracket highlighted
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-lb" id="toastLb"></div>
+
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>

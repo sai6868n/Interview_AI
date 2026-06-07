@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth — InterviewAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body>
+
+  <!-- Ambient background (kept from original) -->
+  <canvas id="authCanvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Back to landing -->
+  <a href="landing.html" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    Back to Home
+  </a>
+
+  <!-- ═══════════════════════════════════════
+       MODAL OVERLAY  (ChatGPT-style)
+  ═══════════════════════════════════════ -->
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="auth-modal" id="authModal">
+
+      <!-- ── Logo ── -->
+      <div class="modal-brand">
+        <div class="brand-logo-mark">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
+            <path d="M9 16 L12 12 L16 20 L20 10 L23 16" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">Interview<span class="brand-accent">AI</span></span>
+      </div>
+
+      <!-- ───────────────────────────────────
+           PANEL 0 : "Log back in" (recent accounts)
+      ─────────────────────────────────────── -->
+      <div class="auth-panel" id="panelRecent">
+        <h2 class="modal-title">Log back in</h2>
+        <p class="modal-sub">Choose an account to continue.</p>
+
+        <div class="recent-accounts" id="recentAccountsList">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="divider-line"><span>OR</span></div>
+
+        <button class="outline-btn" id="loginAnotherBtn">Log in to another account</button>
+        <button class="outline-btn" id="createFromRecentBtn">Create account</button>
+      </div>
+
+      <!-- ───────────────────────────────────
+           PANEL 1 : main login / signup choice
+      ─────────────────────────────────────── -->
+      <div class="auth-panel hidden" id="panelMain">
+        <!-- Tabs -->
+        <div class="auth-tabs" id="authTabs">
+          <button class="auth-tab active" id="tabLogin">Log In</button>
+          <button class="auth-tab" id="tabSignup">Sign Up</button>
+          <div class="auth-tab-slider" id="tabSlider"></div>
+        </div>
+
+        <!-- ── LOGIN ── -->
+        <div id="subLogin">
+          <h2 class="modal-title" id="loginTitle">Log in or sign up</h2>
+          <p class="modal-sub">You'll get smarter responses and more.</p>
+
+          <div class="social-stack">
+            <button class="social-btn-full" id="googleLoginBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </button>
+            <button class="social-btn-full" id="githubLoginBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+
+          <div class="divider-line"><span>OR</span></div>
+
+          <form class="auth-form" id="loginForm" novalidate>
+            <div class="input-wrap">
+              <input type="email" id="loginEmail" class="form-input" placeholder="Email address" autocomplete="email" />
+            </div>
+            <div class="form-error" id="loginEmailError"></div>
+            <button type="submit" class="primary-btn" id="loginContinueBtn">
+              <span class="btn-auth-text">Continue</span>
+            </button>
+          </form>
+
+          <p class="auth-switch">Don't have an account? <a href="#" class="switch-link" data-switch="signup">Sign up</a></p>
+        </div>
+
+        <!-- ── SIGNUP ── -->
+        <div id="subSignup" class="hidden">
+          <h2 class="modal-title">Create account</h2>
+          <p class="modal-sub">Start your AI interview coaching journey</p>
+
+          <div class="social-stack">
+            <button class="social-btn-full" id="googleSignupBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continue with Google
+            </button>
+            <button class="social-btn-full" id="githubSignupBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+
+          <div class="divider-line"><span>OR</span></div>
+
+          <form class="auth-form" id="signupForm" novalidate>
+            <div class="form-row-2">
+              <div class="input-wrap">
+                <input type="text" id="signupName" class="form-input" placeholder="Full Name" autocomplete="name" />
+              </div>
+              <div class="input-wrap">
+                <input type="text" id="signupUsername" class="form-input" placeholder="Username" autocomplete="username" />
+              </div>
+            </div>
+            <div class="input-wrap">
+              <input type="email" id="signupEmail" class="form-input" placeholder="Email address" autocomplete="email" />
+            </div>
+            <div class="form-row-2">
+              <div class="input-wrap pw-wrap">
+                <input type="password" id="signupPassword" class="form-input" placeholder="Password (min 8)" autocomplete="new-password" />
+                <button type="button" class="eye-toggle" id="signupEyeToggle" tabindex="-1">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="input-wrap">
+                <input type="password" id="signupConfirm" class="form-input" placeholder="Confirm password" autocomplete="new-password" />
+              </div>
+            </div>
+
+            <!-- Password strength -->
+            <div class="password-strength">
+              <div class="strength-bars">
+                <div class="strength-bar" id="sb1"></div>
+                <div class="strength-bar" id="sb2"></div>
+                <div class="strength-bar" id="sb3"></div>
+                <div class="strength-bar" id="sb4"></div>
+              </div>
+              <span class="strength-label" id="strengthLabel">Enter a password</span>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" id="agreeTerms" class="check-input" />
+              <label for="agreeTerms" class="check-label">
+                I agree to the <a href="#" class="inline-link">Terms</a> and <a href="#" class="inline-link">Privacy Policy</a>
+              </label>
+            </div>
+
+            <div class="form-error" id="signupError"></div>
+            <button type="submit" class="primary-btn" id="signupSubmit">
+              <span class="btn-auth-text">Create Free Account</span>
+            </button>
+          </form>
+
+          <p class="auth-switch">Already have an account? <a href="#" class="switch-link" data-switch="login">Sign in</a></p>
+        </div>
+      </div>
+
+      <!-- ───────────────────────────────────
+           PANEL 2 : Password entry (after email step)
+      ─────────────────────────────────────── -->
+      <div class="auth-panel hidden" id="panelPassword">
+        <button class="back-btn" id="backToEmailBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 class="modal-title">Welcome back</h2>
+        <p class="modal-sub" id="passwordEmailLabel">Signing in as —</p>
+
+        <form class="auth-form" id="passwordForm" novalidate>
+          <div class="input-wrap pw-wrap">
+            <input type="password" id="loginPassword" class="form-input" placeholder="Password" autocomplete="current-password" />
+            <button type="button" class="eye-toggle" id="loginEyeToggle" tabindex="-1">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+          <div class="form-error" id="loginError"></div>
+          <a href="#" class="forgot-link" id="forgotPasswordBtn">Forgot password?</a>
+          <button type="submit" class="primary-btn" id="loginSubmit">
+            <span class="btn-auth-text">Sign In</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ───────────────────────────────────
+           PANEL 3 : Google account picker
+      ─────────────────────────────────────── -->
+      <div class="auth-panel hidden" id="panelGooglePicker">
+        <h2 class="modal-title">Choose an account</h2>
+        <p class="modal-sub">to continue to InterviewAI</p>
+
+        <div class="account-list" id="googleAccountList">
+          <!-- populated by JS -->
+        </div>
+
+        <button class="account-item use-another" id="useAnotherGoogleBtn">
+          <div class="account-avatar ghost">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+          </div>
+          <span>Use another account</span>
+        </button>
+
+        <p class="picker-policy">Before using this app, you can review InterviewAI's <a href="#" class="inline-link">Privacy Policy</a> and <a href="#" class="inline-link">Terms of Service</a>.</p>
+      </div>
+
+      <!-- Close button -->
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="auth-toast" id="authToast">
+    <span class="auth-toast-icon" id="authToastIcon">✅</span>
+    <span class="auth-toast-msg" id="authToastMsg">Success</span>
+  </div>
+
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
