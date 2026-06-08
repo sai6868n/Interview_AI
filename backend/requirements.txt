@@ -11,3 +11,4 @@ ffmpeg-python
 librosa
 soundfile
 textblob
+python-multipart
