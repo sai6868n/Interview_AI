@@ -28,10 +28,9 @@ app = FastAPI(title="InterviewAI GitHub Auth")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://interview-ai-sai.netlify.app",
         "http://localhost:5500",
         "http://127.0.0.1:5500",
-        "http://localhost",
-        "http://127.0.0.1",
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
