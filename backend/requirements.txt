@@ -8,3 +8,5 @@ joblib
 pydantic
 openai-whisper
 ffmpeg-python
+librosa
+soundfile
