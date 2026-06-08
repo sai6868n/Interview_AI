@@ -294,7 +294,7 @@ window.onload = () => {
       const formData = new FormData();
       formData.append('audio', blob, 'recording.webm');
 
-      const res = await fetch('http://127.0.0.1:8000/analyze-audio', {
+      const res = await fetch('https://interview-ai-ibg1.onrender.com/analyze-audio', {
         method: 'POST',
         body: formData
       });
@@ -419,7 +419,7 @@ window.onload = () => {
       Evaluating...`;
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/predict', {
+      const res = await fetch('https://interview-ai-ibg1.onrender.com/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
