@@ -22,7 +22,7 @@
 ═══════════════════════════════════════════════════════════════ */
 
 /* ── ⚙️  CONFIGURATION ─────────────────────────────────────── */
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '1012801978129-68homnfpa5smbq519hr74k374oh2okk7.apps.googleusercontent.com';
 const GITHUB_CLIENT_ID = '0v23liiwJZY46AHaELJe';
 const USE_FIREBASE     = false;
 const FIREBASE_CONFIG  = {
@@ -422,7 +422,7 @@ function buildAvatarHTML(account) {
    GOOGLE SIGN-IN
 ══════════════════════════════════════════════════════ */
 function isGoogleConfigured() {
-  return GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+  return GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== '1012801978129-68homnfpa5smbq519hr74k374oh2okk7.apps.googleusercontent.com';
 }
 
 function loadGSI(callback) {
