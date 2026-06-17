@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   analyzeTargets.forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => {
-      requireAuth('index.html');
+      requireAuth('index_old.html');
     });
   });
 
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('a[href="index.html"]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
-      requireAuth('index.html');
+      requireAuth('index_old.html');
     });
   });
 
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     a.addEventListener('click', e => {
       e.preventDefault();
       closeDrawer();
-      requireAuth('index.html');
+      requireAuth('index_old.html');
     });
   });
 

@@ -301,7 +301,7 @@ window.onload = () => {
 
       if (!res.ok) throw new Error(`Server responded ${res.status}`);
       const data = await res.json();
-      console.log('[API] analyze-audio response:', data); window.location.href = '/frontend/index_old.html';
+      console.log('[API] analyze-audio response:', data);
 
       processingStatus.style.display = 'none';
       speechMetrics = data;
