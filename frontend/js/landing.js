@@ -106,7 +106,7 @@ function closeDrawer() {
    If not logged in → redirect to login page.
    If logged in    → navigate to destination.
 ─────────────────────────────────────────────────────────────*/
-function requireAuth(destination = 'index.html') {
+function requireAuth(destination = 'index_old.html') {
   if (isLoggedIn()) {
     window.location.href = destination;
   } else {
