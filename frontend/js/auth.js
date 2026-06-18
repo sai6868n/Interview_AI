@@ -311,7 +311,7 @@ function switchSubTab(mode) {
 var closeBtn = $('modalCloseBtn');
 if (closeBtn) {
   closeBtn.addEventListener('click', function () {
-    window.location.href = 'landing.html';
+    window.location.href = 'index.html';
   });
 }
 document.addEventListener('keydown', function (e) {
@@ -422,7 +422,9 @@ function buildAvatarHTML(account) {
    GOOGLE SIGN-IN
 ══════════════════════════════════════════════════════ */
 function isGoogleConfigured() {
-  return GOOGLE_CLIENT_ID && GOOGLE_CLIENT_ID !== '1012801978129-68homnfpa5smbq519hr74k374oh2okk7.apps.googleusercontent.com';
+  return !!GOOGLE_CLIENT_ID && 
+         GOOGLE_CLIENT_ID !== '' && 
+         GOOGLE_CLIENT_ID !== '1012801978129-68homnfpa5smbq519hr74k374oh2okk7.apps.googleusercontent.com';
 }
 
 function loadGSI(callback) {
@@ -456,10 +458,6 @@ function handleGoogleResponse(response) {
 }
 
 function triggerGoogleSignIn() {
-  if (!isGoogleConfigured()) {
-    showGooglePickerOrDemo();
-    return;
-  }
   loadGSI(function () {
     try {
       window.google.accounts.id.initialize({
@@ -467,10 +465,13 @@ function triggerGoogleSignIn() {
         callback: handleGoogleResponse,
         auto_select: false,
         cancel_on_tap_outside: true,
+        use_fedcm_for_prompt: true,   // ← enables FedCM (shows system account picker)
       });
+
+      // Try One Tap first; if blocked/dismissed, fall back to renderButton overlay
       window.google.accounts.id.prompt(function (notification) {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          showGSIButtonOverlay();
+          showGSIButtonOverlay();  // your existing overlay with renderButton
         }
       });
     } catch (err) {

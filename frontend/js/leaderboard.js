@@ -226,7 +226,7 @@ function initSidebar() {
   $('logoutLink')?.addEventListener('click', e => {
     e.preventDefault();
     localStorage.removeItem('interviewai_user');
-    window.location.href = 'landing.html';
+    window.location.href = 'index.html';
   });
 }
 

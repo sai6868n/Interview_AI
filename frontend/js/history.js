@@ -98,7 +98,7 @@
       e.preventDefault();
       localStorage.removeItem(STORAGE_KEY);
       sessionStorage.removeItem(SESSION_KEY);
-      window.location.href = 'landing.html';
+      window.location.href = 'index.html';
     });
   }
 

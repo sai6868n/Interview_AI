@@ -843,7 +843,7 @@ function initSidebar() {
     e.preventDefault();
     safeSet('interviewai_user', null);
     showToast('Logged out successfully', 'info');
-    setTimeout(() => { window.location.href = 'landing.html'; }, 900);
+    setTimeout(() => { window.location.href = 'index.html'; }, 900);
   });
 }
 

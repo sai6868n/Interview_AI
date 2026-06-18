@@ -76,8 +76,7 @@ function renderNavAuthState() {
   } else {
     // ── LOGGED OUT: show Login + Sign Up + menu ──
     navRight.innerHTML = `
-      <a href="auth.html?mode=login"  class="btn-nav-login">Login</a>
-      <a href="auth.html?mode=signup" class="btn-nav-signup">Sign Up</a>
+      <a href="auth.html?mode=signup" class="btn-nav-signup">Login / Sign Up</a>
       <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>`;

@@ -463,7 +463,7 @@
       localStorage.removeItem('interviewai_user');
       sessionStorage.removeItem('interviewai_user');
       showToast('Logged out successfully.', 'info');
-      setTimeout(() => { window.location.href = 'landing.html'; }, 700);
+      setTimeout(() => { window.location.href = 'index.html'; }, 700);
     });
   }
 

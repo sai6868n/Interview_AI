@@ -561,7 +561,7 @@ function confirmDeleteAccount() {
   KEYS_TO_DELETE.forEach(k => { try { localStorage.removeItem(k); } catch {} });
 
   showToast('Account deleted. Redirecting…', 'info');
-  setTimeout(() => { window.location.href = 'landing.html'; }, 1400);
+  setTimeout(() => { window.location.href = 'index.html'; }, 1400);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -636,7 +636,7 @@ function initSidebar() {
     e.preventDefault();
     safeSet('interviewai_user', null);
     showToast('Logged out successfully', 'info');
-    setTimeout(() => { window.location.href = 'landing.html'; }, 900);
+    setTimeout(() => { window.location.href = 'index.html'; }, 900);
   });
 
   document.addEventListener('keydown', e => {
