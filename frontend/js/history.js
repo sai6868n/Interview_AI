@@ -110,14 +110,20 @@
   }
 
   /* ── Load history ───────────────────────────────────────── */
-  function loadHistory() {
+    function loadHistory() {
     try {
-      const stored = JSON.parse(localStorage.getItem(HISTORY_KEY));
-      state.allHistory = stored?.length ? stored : generateMockHistory(14);
+      const user = getUser();
+      const email = user?.email || 'guest';
+      const userKey = 'interviewai_history_' + email;
+      const stored = JSON.parse(localStorage.getItem(userKey));
+      state.allHistory = stored?.length ? stored : [];
+    // Save back to shared key for other pages
+      if (state.allHistory.length) {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(state.allHistory));
+      }
     } catch {
-      state.allHistory = generateMockHistory(14);
+      state.allHistory = [];
     }
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(state.allHistory));
   }
 
   /* ── Sidebar ────────────────────────────────────────────── */

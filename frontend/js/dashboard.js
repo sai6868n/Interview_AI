@@ -111,8 +111,10 @@
      LOAD HISTORY FROM localStorage (or mock)
   ════════════════════════════════════════════════════════ */
   function loadHistory() {
-    const stored = localStorage.getItem('interviewai_history');
-    state.history = stored ? JSON.parse(stored) : MOCK_HISTORY;
+    const userEmail = state.user?.email || 'guest';
+    const userKey = 'interviewai_history_' + userEmail;
+    const stored = localStorage.getItem(userKey);
+  state.history = stored ? JSON.parse(stored) : [];  // Empty for new users!
   }
 
   /* ════════════════════════════════════════════════════════
@@ -186,7 +188,7 @@
       : 0;
     const rate = total ? Math.round((selected / total) * 100) : 0;
 
-    const streak = parseInt(localStorage.getItem('interviewai_streak') || '7');
+    const streak = parseInt(localStorage.getItem('interviewai_streak_' + (state.user?.email || 'guest')) || '0');
 
     animateCount('statInterviews', total);
     animateCount('statConfidence', avgConf, '%');
@@ -313,22 +315,49 @@
     const container = document.getElementById('lbMini');
     if (!container) return;
 
-    const rankClasses = ['rank-1', 'rank-2', 'rank-3', 'rank-n', 'rank-n'];
-    const rankLabels  = ['1st', '2nd', '3rd', '4th', '5th'];
+    const allEntries = [];
+    const currentEmail = state.user?.email;
 
-    container.innerHTML = LEADERBOARD.map((u, i) => {
-      const avatarBg  = u.me ? 'linear-gradient(135deg,#00f5ff,#7c3aed)' : 'linear-gradient(135deg,rgba(0,245,255,0.2),rgba(124,58,237,0.2))';
-      const avatarText = u.me
-        ? (state.user?.avatar || state.user?.name?.slice(0,2)?.toUpperCase() || 'ME')
-        : u.avatar;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('interviewai_history_')) {
+        const email = key.replace('interviewai_history_', '');
+        if (email === 'guest') continue;
+        try {
+          const history = JSON.parse(localStorage.getItem(key) || '[]');
+          if (!history.length) continue;
+          const avgConf = Math.round(history.reduce((s, h) => s + (h.confidence || 0), 0) / history.length);
+        // Get name from registered user data
+          const regData = JSON.parse(localStorage.getItem('interviewai_registered_' + email) || '{}');
+          const name = regData.name || email.split('@')[0];
+          allEntries.push({ name, email, conf: avgConf });
+        } catch(e) {}
+      }
+    }
+
+  // Sort by confidence
+    allEntries.sort((a, b) => b.conf - a.conf);
+
+    const rankClasses = ['rank-1','rank-2','rank-3','rank-n','rank-n'];
+    const rankLabels  = ['1st','2nd','3rd','4th','5th'];
+
+    if (allEntries.length === 0) {
+      container.innerHTML = `<div style="padding:20px;color:var(--text2);font-size:13px;text-align:center">
+        Complete an interview to appear here! 🏆</div>`;
+      return;
+    }
+
+    container.innerHTML = allEntries.slice(0, 5).map((u, i) => {
+      const isMe = u.email === currentEmail;
+      const avatarText = u.name.slice(0, 2).toUpperCase();
+      const avatarBg = isMe ? 'linear-gradient(135deg,#00f5ff,#7c3aed)' : 'linear-gradient(135deg,rgba(0,245,255,0.2),rgba(124,58,237,0.2))';
       return `
-        <div class="lb-mini-row ${u.me ? 'me' : ''}">
-          <div class="lb-rank-badge ${rankClasses[i]}">${rankLabels[i]}</div>
+        <div class="lb-mini-row ${isMe ? 'me' : ''}">
+          <div class="lb-rank-badge ${rankClasses[i] || 'rank-n'}">${rankLabels[i] || '#'+(i+1)}</div>
           <div class="lb-mini-avatar" style="background:${avatarBg}">${avatarText}</div>
-          <span class="lb-mini-name">${u.me ? (state.user?.name?.split(' ')[0] || 'You') : u.name}</span>
-          <span class="lb-mini-conf">${u.conf}</span>
-        </div>
-      `;
+          <span class="lb-mini-name">${isMe ? u.name+' (You)' : u.name}</span>
+          <span class="lb-mini-conf">${u.conf}%</span>
+        </div>`;
     }).join('');
   }
 

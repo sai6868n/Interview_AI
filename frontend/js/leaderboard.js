@@ -144,48 +144,65 @@ function rankChangeHTML(delta) {
 /* ─────────────────────────────────────────────────
    INJECT REAL USER into players
 ───────────────────────────────────────────────── */
-function injectRealUser(players) {
-  const user    = loadUser();
-  const history = getHistory();
-  if (!user) return players;
+  function injectRealUser(players) {
+    const user    = loadUser();
+    const allRealEntries = [];
+  
+  // Scan all users from localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('interviewai_history_')) {
+        const email = key.replace('interviewai_history_', '');
+        if (email === 'guest') continue;
+        try {
+          const history = JSON.parse(localStorage.getItem(key) || '[]');
+          if (!history.length) continue;
+          const conf = Math.round(history.reduce((s, h) => s + (h.confidence || h.confidence_score || 0), 0) / history.length);
+          const regData = JSON.parse(localStorage.getItem('interviewai_registered_' + email) || '{}');
+          const name = regData.name || email.split('@')[0];
+          const lastResult = history[0]?.result || history[0]?.interview_result || 'Not Selected';
+          const stress = history[0]?.stress || history[0]?.stress_level || 'Medium';
+          allRealEntries.push({
+            id: 999 + allRealEntries.length,
+            name,
+            email,
+            role: regData.role || 'Software Engineer',
+            confidence: conf,
+            stress,
+            result: lastResult,
+            sessions: history.length,
+            delta: 0,
+            isMe: user?.email === email,
+          });
+        } catch(e) {}
+      }
+    }
 
-  const name  = user.name  || 'You';
-  const role  = user.role  || 'Software Engineer';
-  const total = history.length;
-
-  const conf = total
-    ? Math.round(history.reduce((s, h) => s + (h.confidence || 70), 0) / total)
-    : 72;
-
-  const lastResult = history.length
-    ? (history[history.length - 1].result || 'Selected')
-    : 'Selected';
-
-  const stressRaw = total
-    ? history.reduce((s, h) => s + (h.stress === 'Low' ? 1 : h.stress === 'High' ? 3 : 2), 0) / total
-    : 1.5;
-  const stress = stressRaw < 1.8 ? 'Low' : stressRaw > 2.3 ? 'High' : 'Medium';
-
-  // Remove any existing "me" entry
-  const cleaned = players.filter(p => !p.isMe);
-
-  // Replace a random player's slot
-  const insertAt = Math.floor(Math.random() * Math.min(20, cleaned.length));
-  const mePlayer = {
-    id: 999,
-    name,
-    role,
-    confidence: conf,
-    stress,
-    result: lastResult,
-    sessions: total,
-    delta: 0,
-    isMe: true,
-  };
-
-  cleaned.splice(insertAt, 0, mePlayer);
-  return cleaned;
-}
+    if (allRealEntries.length === 0 && !user) return players;
+  
+    if (allRealEntries.length > 0) {
+    // Use only real users if we have them
+      return allRealEntries;
+    }
+  
+  // Fall back to injecting single real user into mock players
+    if (!user) return players;
+    const history = getHistory();
+    const cleaned = players.filter(p => !p.isMe);
+    const conf = history.length
+      ? Math.round(history.reduce((s, h) => s + (h.confidence || h.confidence_score || 0), 0) / history.length)
+      : 0;
+    if (conf === 0) return cleaned; // Don't show user with 0 interviews
+  
+    cleaned.unshift({
+      id: 999, name: user.name || 'You',
+      role: user.role || 'Software Engineer',
+      confidence: conf,
+      stress: 'Low', result: 'Selected',
+      sessions: history.length, delta: 0, isMe: true,
+    });
+    return cleaned;
+  }
 
 /* ─────────────────────────────────────────────────
    BUILD PLAYERS FOR PERIOD

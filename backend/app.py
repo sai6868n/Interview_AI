@@ -11,11 +11,20 @@ app = FastAPI()
     
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=[
+        "http://127.0.0.1:5500",
+        "http://localhost:5500",
+        "http://127.0.0.1:3000",
+        "http://localhost:3000",
+        "https://interview-ai-nu-virid.vercel.app",
+        "https://interview-ai-sai.netlify.app",
+        "*"
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
-)      
+)
+    
 class Candidate(BaseModel):
 
     Speaking_Rate: float
