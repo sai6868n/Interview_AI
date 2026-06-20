@@ -7,7 +7,7 @@ window.onload = () => {
   /* ════════════════════════════════════════════════════════
      CONSTANTS
   ════════════════════════════════════════════════════════ */
-  const BACKEND = 'https://interview-ai-ibg1.onrender.com';
+  const BACKEND = 'https://interviewai-production-8f80.up.railway.app';
 
   const ROLE_LABELS = {
     '0': 'Data Scientist',

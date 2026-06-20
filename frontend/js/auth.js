@@ -693,7 +693,7 @@ function showGitHubDemoModal() {
   var savedState = sessionStorage.getItem('github_oauth_state');
   if (state !== savedState) { toast('GitHub auth state mismatch.', 'error'); return; }
   toast('Completing GitHub sign-in…', 'info');
-  fetch('https://interview-ai-ibg1.onrender.com/auth/github/callback?code=' + code)
+  fetch('https://interviewai-production-8f80.up.railway.app/auth/github/callback?code=' + code)
     .then(function (r) { return r.json(); })
     .then(function (data) {
       if (!data.email) { throw new Error('No email returned'); }
