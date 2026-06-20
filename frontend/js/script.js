@@ -1,5 +1,5 @@
 /* ============================================================
-   INTERVIEW AI EVALUATOR — script.js  (v3 — clean)
+   INTERVIEW AI EVALUATOR — script.js  (v4 — transcript toggle)
    ============================================================ */
 
 window.onload = () => {
@@ -40,6 +40,11 @@ window.onload = () => {
   const transcriptText       = document.getElementById('transcriptText');
   const canvas               = document.getElementById('visualizerCanvas');
   const ctx                  = canvas.getContext('2d');
+
+  /* Transcript toggle */
+  const toggleTranscriptBtn   = document.getElementById('toggleTranscript');
+  const toggleTranscriptLabel = document.getElementById('toggleTranscriptLabel');
+  const transcriptBox         = document.getElementById('transcriptBox');
 
   /* Form fields */
   const fExperience          = document.getElementById('Experience_Years');
@@ -111,11 +116,10 @@ window.onload = () => {
 
   /* ════════════════════════════════════════════════════════
      WAKE UP BACKEND ON PAGE LOAD
-     Render free tier sleeps after 15min inactivity.
-     Pinging on load means it's warm by the time user records.
+     Keeps the backend warm so the first real request is faster.
   ════════════════════════════════════════════════════════ */
   (function wakeBackend() {
-    console.log('[Backend] Pinging to wake up Render...');
+    console.log('[Backend] Pinging backend to warm it up...');
     fetch(`${BACKEND}/`)
       .then(r => r.json())
       .then(d => {
@@ -181,6 +185,21 @@ window.onload = () => {
     else if (val > -0.1) { sentimentEmoji.textContent = '😐'; sentimentText.textContent = 'Neutral'; }
     else if (val > -0.4) { sentimentEmoji.textContent = '😕'; sentimentText.textContent = 'Negative'; }
     else                 { sentimentEmoji.textContent = '😔'; sentimentText.textContent = 'Very Negative'; }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     TRANSCRIPT TOGGLE
+  ════════════════════════════════════════════════════════ */
+  toggleTranscriptBtn?.addEventListener('click', () => {
+    const isHidden = transcriptBox.style.display === 'none';
+    transcriptBox.style.display = isHidden ? 'block' : 'none';
+    toggleTranscriptLabel.textContent = isHidden ? 'Hide Speech Transcript' : 'Show Speech Transcript';
+  });
+
+  function resetTranscriptToggle() {
+    if (!transcriptBox || !toggleTranscriptLabel) return;
+    transcriptBox.style.display = 'none';
+    toggleTranscriptLabel.textContent = 'Show Speech Transcript';
   }
 
   /* ════════════════════════════════════════════════════════
@@ -322,6 +341,7 @@ window.onload = () => {
       if (vizIdleText) vizIdleText.style.display = 'none';
       speechResults.style.display      = 'none';
       processingStatus.style.display   = 'none';
+      resetTranscriptToggle();
 
       stopVisualization();
       drawLiveWave(analyserNode);
@@ -346,11 +366,12 @@ window.onload = () => {
   /* ════════════════════════════════════════════════════════
      PROCESS AUDIO → BACKEND
      Uses AbortController for 90-second timeout to handle
-     Render cold starts (can take 50+ seconds on free tier).
+     backend cold starts (can take 30-60s after idle).
   ════════════════════════════════════════════════════════ */
   async function processAudio() {
     processingStatus.style.display = 'block';
     speechResults.style.display    = 'none';
+    resetTranscriptToggle();
 
     /* Show cold-start warning if backend hasn't confirmed awake */
     if (processingText) processingText.textContent = '⏳ Processing Speech...';
@@ -362,7 +383,7 @@ window.onload = () => {
     const formData = new FormData();
     formData.append('file', blob, 'recording.webm');
 
-    /* 90-second timeout — enough for Render cold start + inference */
+    /* 90-second timeout — enough for cold start + inference */
     const controller = new AbortController();
     const timeoutId  = setTimeout(() => controller.abort(), 90000);
 
@@ -424,6 +445,7 @@ window.onload = () => {
   ════════════════════════════════════════════════════════ */
   function renderSpeechResults(data) {
     transcriptText.textContent = data.transcript || 'No transcript available.';
+    resetTranscriptToggle();
 
     document.getElementById('m_SpeakingRate').textContent   = data.Speaking_Rate   != null ? Number(data.Speaking_Rate).toFixed(1)   + ' wpm' : '—';
     document.getElementById('m_AvgPitch').textContent       = data.Avg_Pitch        != null ? Number(data.Avg_Pitch).toFixed(1)       + ' Hz'  : '—';
@@ -748,6 +770,6 @@ window.onload = () => {
     document.head.appendChild(s);
   }
 
-  console.log('[InterviewAI] script.js v3 loaded ✓');
+  console.log('[InterviewAI] script.js v4 loaded ✓ (transcript toggle enabled)');
 
 }; /* end window.onload */

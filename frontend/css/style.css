@@ -655,3 +655,24 @@ body {
   .modal-controls { flex-direction: column; }
   .header-badges .badge-version { display: none; }
 }
+/* ── Transcript Toggle Button (append to style.css) ───────── */
+.btn-toggle-transcript {
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  transition: var(--trans);
+}
+.btn-toggle-transcript:hover {
+  border-color: var(--border-h);
+  color: var(--cyan);
+  background: rgba(0,245,255,0.05);
+}

@@ -538,8 +538,14 @@
           <h4 class="speech-results-title">Analysis Complete</h4>
         </div>
 
-        <!-- Transcript Display -->
-        <div class="transcript-box">
+        <!-- Transcript Toggle -->
+        <button type="button" id="toggleTranscript" class="btn btn-toggle-transcript">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="toggleTranscriptLabel">Show Speech Transcript</span>
+        </button>
+
+        <!-- Transcript Display (hidden until toggled) -->
+        <div class="transcript-box" id="transcriptBox" style="display:none">
           <div class="transcript-label">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Transcript
@@ -593,5 +599,3 @@
   <script src="js/script.js"></script>
 </body>
 </html>
-
-
