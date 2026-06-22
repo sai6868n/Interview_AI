@@ -383,10 +383,11 @@ window.onload = () => {
     const formData = new FormData();
     formData.append('file', blob, 'recording.webm');
 
-    /* 180-second timeout — Whisper + librosa processing has been
-       observed taking 60-90+ seconds on the current Railway plan */
+    /* 45-second timeout — faster-whisper processes short clips
+       in a few seconds; this leaves generous margin without
+       making the user wait minutes if something is genuinely wrong */
     const controller = new AbortController();
-    const timeoutId  = setTimeout(() => controller.abort(), 180000);
+    const timeoutId  = setTimeout(() => controller.abort(), 45000);
 
     try {
       const res = await fetch(`${BACKEND}/analyze-audio`, {
