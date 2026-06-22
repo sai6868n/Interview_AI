@@ -12,7 +12,9 @@ def get_model():
     return model
 
 def speech_to_text(audio_path):
-    result = get_model().transcribe(audio_path, fp16=False)
+    # Force English — Whisper's auto language-detection can misfire on
+    # short/quiet/noisy clips and produce garbled non-English transcripts.
+    result = get_model().transcribe(audio_path, fp16=False, language="en")
     return result["text"]
 
 def get_audio_duration(audio_path):
