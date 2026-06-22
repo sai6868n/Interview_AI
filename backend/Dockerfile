@@ -17,6 +17,6 @@ RUN python -c "import whisper; whisper.load_model('tiny')"
 
 COPY . .
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD uvicorn app:app --host 0.0.0.0 --port $PORT
