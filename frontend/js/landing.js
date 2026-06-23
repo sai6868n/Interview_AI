@@ -12,24 +12,12 @@ function getUser() {
 }
 function isLoggedIn() { return getUser() !== null; }
 
-function logoutUser() {
-  const keysToRemove = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (k && k.startsWith('interviewai_')) keysToRemove.push(k);
-  }
-  keysToRemove.forEach(k => localStorage.removeItem(k));
-  try { sessionStorage.clear(); } catch {}
-}
-
 function initials(name) {
   if (!name) return '?';
   return name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
 }
 
-/* ─── Navbar Auth State ─────────────────────────────────────
-   Renders a styled chip + gradient Dashboard button when logged in
-─────────────────────────────────────────────────────────────*/
+/* ─── Navbar Auth State ─────────────────────────────────────── */
 function renderNavAuthState() {
   const user     = getUser();
   const navRight = document.querySelector('.nav-right');
@@ -51,29 +39,57 @@ function renderNavAuthState() {
       <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>`;
-    document.getElementById('navMenuBtn')?.addEventListener('click', toggleDrawer);
   } else {
     navRight.innerHTML = `
       <a href="auth.html?mode=signup" class="btn-nav-signup">Login / Sign Up</a>
       <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>`;
-    document.getElementById('navMenuBtn')?.addEventListener('click', toggleDrawer);
+  }
+
+  // Wire hamburger after injecting
+  document.getElementById('navMenuBtn')?.addEventListener('click', toggleDrawer);
+}
+
+/* ─── Mobile Drawer — smooth animated ─────────────────────── */
+let drawerOpen = false;
+
+function toggleDrawer() {
+  drawerOpen ? closeDrawer() : openDrawer();
+}
+
+function openDrawer() {
+  const drawer = document.getElementById('navDrawer');
+  const btn    = document.getElementById('navMenuBtn');
+  if (!drawer) return;
+  drawerOpen = true;
+  drawer.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Animate hamburger → X
+  if (btn) {
+    const spans = btn.querySelectorAll('span');
+    if (spans[0]) { spans[0].style.transform = 'translateY(7px) rotate(45deg)'; }
+    if (spans[1]) { spans[1].style.opacity = '0'; spans[1].style.transform = 'scaleX(0)'; }
+    if (spans[2]) { spans[2].style.transform = 'translateY(-7px) rotate(-45deg)'; }
   }
 }
 
-/* ─── Mobile Drawer ─────────────────────────────────────────*/
-let drawerOpen = false;
-function toggleDrawer() {
-  const drawer = document.getElementById('navDrawer');
-  if (!drawer) return;
-  drawerOpen = !drawerOpen;
-  drawer.classList.toggle('open', drawerOpen);
-}
 function closeDrawer() {
   const drawer = document.getElementById('navDrawer');
-  if (drawer) drawer.classList.remove('open');
+  const btn    = document.getElementById('navMenuBtn');
+  if (!drawer) return;
   drawerOpen = false;
+  drawer.classList.remove('open');
+  document.body.style.overflow = '';
+
+  // Animate X → hamburger
+  if (btn) {
+    const spans = btn.querySelectorAll('span');
+    if (spans[0]) { spans[0].style.transform = ''; }
+    if (spans[1]) { spans[1].style.opacity = ''; spans[1].style.transform = ''; }
+    if (spans[2]) { spans[2].style.transform = ''; }
+  }
 }
 
 /* ─── Auth Guard ─────────────────────────────────────────── */
@@ -95,7 +111,12 @@ function initParticles() {
 
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   function makeParticle() {
-    return { x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.5+0.3, vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3, alpha: Math.random()*0.5+0.1 };
+    return {
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.5+0.3,
+      vx: (Math.random()-0.5)*0.3, vy: (Math.random()-0.5)*0.3,
+      alpha: Math.random()*0.5+0.1
+    };
   }
   function init() { resize(); particles = Array.from({length:120}, makeParticle); }
   function draw() {
@@ -115,39 +136,51 @@ function initParticles() {
 function initNavScroll() {
   const nav = document.getElementById('navbar');
   if (!nav) return;
-  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, {passive:true});
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 }
 
 function initCarousel() {
   const track = document.getElementById('carouselTrack');
   const dots   = document.querySelectorAll('.cdot');
   if (!track) return;
-  const SLIDE_W = 300 + 20;
+  const SLIDE_W   = 300 + 20;
   const TOTAL_REAL = 8;
   let current = 0, autoTimer;
 
   function goTo(idx) {
     current = ((idx % TOTAL_REAL) + TOTAL_REAL) % TOTAL_REAL;
     track.style.transform = `translateX(-${current * SLIDE_W}px)`;
-    dots.forEach((d,i) => d.classList.toggle('active', i === current));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
-  function next() { goTo(current+1); }
+  function next() { goTo(current + 1); }
   autoTimer = setInterval(next, 3200);
-  dots.forEach((d,i) => { d.addEventListener('click', () => { clearInterval(autoTimer); goTo(i); autoTimer = setInterval(next,3200); }); });
+  dots.forEach((d, i) => {
+    d.addEventListener('click', () => { clearInterval(autoTimer); goTo(i); autoTimer = setInterval(next, 3200); });
+  });
   track.addEventListener('mouseenter', () => clearInterval(autoTimer));
   track.addEventListener('mouseleave', () => { autoTimer = setInterval(next, 3200); });
 }
 
-/* ─── Leaderboard Preview — REAL USERS ONLY ─────────────────
-   Only shows real registered users from localStorage.
-   Shows a "be the first" message if no one has done an interview yet.
-─────────────────────────────────────────────────────────────*/
+/* ─── Leaderboard Preview — real users + dummy mix ──────────
+   Shows real users from localStorage first, then fills
+   remaining slots with dummy entries so board is never empty.
+──────────────────────────────────────────────────────────── */
+const LB_DUMMY = [
+  { name:'Arjun Sharma',   conf:91, result:'Selected',     streak:7  },
+  { name:'Priya Verma',    conf:88, result:'Selected',     streak:5  },
+  { name:'Rohan Mehta',    conf:84, result:'Selected',     streak:3  },
+  { name:'Ananya Singh',   conf:81, result:'Selected',     streak:4  },
+  { name:'Vikram Patel',   conf:79, result:'Selected',     streak:2  },
+];
+
 function renderLeaderboardPreview() {
   const body = document.getElementById('lbTableBody');
   if (!body) return;
 
-  // Scan ALL per-user history keys
-  const entries = [];
+  // Collect real users
+  const realEntries = [];
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
     if (!key || !key.startsWith('interviewai_history_')) continue;
@@ -156,44 +189,43 @@ function renderLeaderboardPreview() {
     try {
       const history = JSON.parse(localStorage.getItem(key) || '[]');
       if (!history.length) continue;
-
-      const avgConf = Math.round(history.reduce((s,h) => s + (h.confidence || h.confidence_score || 0), 0) / history.length);
+      const avgConf    = Math.round(history.reduce((s,h) => s + (h.confidence || h.confidence_score || 0), 0) / history.length);
       const lastResult = history[0]?.result || history[0]?.interview_result || 'Not Selected';
-      const regData = JSON.parse(localStorage.getItem('interviewai_registered_' + email) || '{}');
+      const regData    = JSON.parse(localStorage.getItem('interviewai_registered_' + email) || '{}');
       const storedUser = JSON.parse(localStorage.getItem('interviewai_user') || '{}');
-      const name = regData.name || (storedUser.email === email ? storedUser.name : null) || email.split('@')[0];
+      const name       = regData.name || (storedUser.email === email ? storedUser.name : null) || email.split('@')[0];
 
-      // Compute streak
-      const sorted = [...history].filter(h => h.date).sort((a,b) => new Date(b.date) - new Date(a.date));
+      const sorted = [...history].filter(h => h.date).sort((a,b) => new Date(b.date)-new Date(a.date));
       let streak = 0, prev = new Date(); prev.setHours(0,0,0,0);
       for (const h of sorted) {
         const d = new Date(h.date); d.setHours(0,0,0,0);
-        if ((prev - d) / 86400000 <= 1) { streak++; prev = d; } else break;
+        if ((prev-d)/86400000 <= 1) { streak++; prev = d; } else break;
       }
-
-      entries.push({ name, confidence: avgConf, result: lastResult, streak });
+      realEntries.push({ name, conf: avgConf, result: lastResult, streak, isReal: true });
     } catch(e) {}
   }
 
-  entries.sort((a,b) => b.confidence - a.confidence);
-  const top5 = entries.slice(0, 5);
-
-  if (!top5.length) {
-    body.innerHTML = `
-      <div class="lb-row" style="justify-content:center;padding:28px;color:rgba(255,255,255,0.4);font-size:13px;text-align:center">
-        🏆 No interviews yet — be the first on the leaderboard!
-      </div>`;
-    return;
+  // Merge: real users first, then dummy to fill up to 5 visible rows
+  const allEntries = [...realEntries];
+  for (const d of LB_DUMMY) {
+    if (allEntries.length >= 5) break;
+    // don't add dummy if real user with same name already exists
+    if (!realEntries.find(r => r.name === d.name)) {
+      allEntries.push({ name: d.name, conf: d.conf, result: d.result, streak: d.streak, isReal: false });
+    }
   }
 
+  allEntries.sort((a, b) => b.conf - a.conf);
+  const top5 = allEntries.slice(0, 5);
+
   const rankEmojis = ['🥇','🥈','🥉'];
-  body.innerHTML = top5.map((e,i) => {
+  body.innerHTML = top5.map((e, i) => {
     const isSelected = (e.result||'').toLowerCase().includes('selected') && !(e.result||'').toLowerCase().includes('not');
     return `
       <div class="lb-row">
         <span class="lb-rank">${rankEmojis[i] || '#'+(i+1)}</span>
         <span class="lb-name">${e.name || 'Anonymous'}</span>
-        <span class="lb-conf" style="color:var(--cyan)">${Math.round(e.confidence||0)}%</span>
+        <span class="lb-conf" style="color:var(--cyan)">${Math.round(e.conf||0)}%</span>
         <span class="lb-result" style="color:${isSelected?'var(--green)':'var(--pink)'}">
           ${isSelected ? '✓ Selected' : '✗ Not Selected'}
         </span>
@@ -202,22 +234,55 @@ function renderLeaderboardPreview() {
   }).join('');
 }
 
+/* ─── Smooth Scroll ─────────────────────────────────────── */
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); closeDrawer(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+      if (target) {
+        e.preventDefault();
+        closeDrawer();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
   document.querySelectorAll('.drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
 }
 
+/* ─── Close drawer on outside click / resize ──────────── */
+function initDrawerBehavior() {
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!drawerOpen) return;
+    const drawer = document.getElementById('navDrawer');
+    const btn    = document.getElementById('navMenuBtn');
+    if (drawer && !drawer.contains(e.target) && btn && !btn.contains(e.target)) {
+      closeDrawer();
+    }
+  });
+
+  // Close on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900 && drawerOpen) closeDrawer();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawerOpen) closeDrawer();
+  });
+}
+
+/* ─── Scroll Animations ─────────────────────────────────── */
 function initScrollAnimations() {
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); } });
-  }, {threshold:0.15});
-  document.querySelectorAll('.hiw-step,.pricing-card,.feature-slide,.lb-table-wrap').forEach(el => {
-    el.classList.add('scroll-hidden'); obs.observe(el);
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.hiw-step, .pricing-card, .feature-slide, .lb-table-wrap').forEach(el => {
+    el.classList.add('scroll-hidden');
+    obs.observe(el);
   });
 }
 
@@ -247,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCarousel();
   renderLeaderboardPreview();
   initSmoothScroll();
+  initDrawerBehavior();
   initScrollAnimations();
 
   console.log('[InterviewAI Landing] Auth:', isLoggedIn() ? 'logged in' : 'logged out');
