@@ -8,15 +8,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/landing.css" />
+  <style>
+    /* ── NAV USER CHIP (logged-in state) ── */
+    .nav-user-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; padding: 5px 12px 5px 6px;
+    }
+    .nav-user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg,#00f5ff,#7c3aed);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: #000;
+    }
+    .nav-user-name { font-size: 13px; font-weight: 600; }
+    .btn-nav-dashboard {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 10px;
+      background: linear-gradient(135deg,#00f5ff,#7c3aed);
+      color: #000; font-size: 13px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(0,245,255,0.25);
+    }
+    .btn-nav-dashboard:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 0 28px rgba(0,245,255,0.4); }
+    .btn-nav-signup {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-nav-signup:hover { background: rgba(255,255,255,0.14); }
+
+    /* ── CREATOR BADGE ── */
+    .creator-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg,rgba(0,245,255,0.08),rgba(124,58,237,0.08));
+      border: 1px solid rgba(0,245,255,0.2);
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.75);
+      margin-top: 10px; cursor: default;
+    }
+    .creator-badge strong { color: #00f5ff; }
+    .creator-badge .cb-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: linear-gradient(135deg,#00f5ff,#7c3aed);
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       PARTICLE CANVAS BACKGROUND
-  ══════════════════════════════════════════ -->
   <canvas id="particleCanvas"></canvas>
-
-  <!-- Ambient Orbs -->
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
@@ -27,7 +71,6 @@
   ══════════════════════════════════════════ -->
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
-      <!-- LEFT: Logo -->
       <a href="index.html" class="nav-logo">
         <div class="nav-logo-mark">
           <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
@@ -37,7 +80,6 @@
         <span class="nav-logo-text">Interview<span class="nav-accent">AI</span></span>
       </a>
 
-      <!-- CENTER: Nav Links (desktop) -->
       <div class="nav-links" id="navLinks">
         <a href="#features" class="nav-link">Features</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
@@ -45,8 +87,8 @@
         <a href="#pricing" class="nav-link">Pricing</a>
       </div>
 
-      <!-- RIGHT: Auth Buttons + Menu -->
-      <div class="nav-right">
+      <!-- RIGHT: rendered by landing.js based on auth state -->
+      <div class="nav-right" id="navRight">
         <a href="auth.html?mode=login" class="btn-nav-signup">Login / Sign Up</a>
         <button class="nav-menu-btn" id="navMenuBtn" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -54,7 +96,6 @@
       </div>
     </div>
 
-    <!-- Mobile Drawer -->
     <div class="nav-drawer" id="navDrawer">
       <a href="#features" class="drawer-link">Features</a>
       <a href="#how-it-works" class="drawer-link">How It Works</a>
@@ -103,7 +144,6 @@
       </a>
     </div>
 
-    <!-- Hero Stats Row -->
     <div class="hero-stats">
       <div class="hero-stat">
         <span class="hero-stat-val">98%</span>
@@ -126,7 +166,6 @@
       </div>
     </div>
 
-    <!-- Floating preview card -->
     <div class="hero-preview">
       <div class="preview-card preview-card-1 glass-card">
         <div class="preview-icon">🎤</div>
@@ -179,167 +218,75 @@
 
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carouselTrack">
-
         <div class="feature-slide glass-card">
           <div class="slide-icon-wrap" style="--ic:#00f5ff">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">AI Speech Analysis</h3>
-          <p class="slide-desc">Real-time transcription with Whisper. Measures speaking rate, pitch, pauses, and filler words automatically.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">Whisper AI</span>
-            <span class="slide-tag">librosa</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#f59e0b">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Confidence Detection</h3>
-          <p class="slide-desc">ML model analyzes 13 speech and behavioral features to compute a precise confidence score from 0–100.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">ML Model</span>
-            <span class="slide-tag">13 Features</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#f43f5e">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Stress Detection</h3>
-          <p class="slide-desc">Identifies stress patterns from vocal biomarkers. Classifies stress as Low, Medium, or High with actionable feedback.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">Vocal Biomarkers</span>
-            <span class="slide-tag">3-Level Scale</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#7c3aed">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Technical Evaluation</h3>
-          <p class="slide-desc">Scores technical correctness and grammar quality. Supports 6 role types including SWE, DS, ML, and Frontend.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">6 Role Types</span>
-            <span class="slide-tag">Grammar AI</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#10b981">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Personalized Recommendations</h3>
-          <p class="slide-desc">AI generates custom improvement plans with STAR method, communication techniques, and confidence tips.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">STAR Method</span>
-            <span class="slide-tag">Custom Plans</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#3b82f6">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <polyline points="9 11 12 14 22 4"/>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Daily Improvement Tasks</h3>
-          <p class="slide-desc">AI-curated daily exercises to build speaking fluency, reduce filler words, and boost overall confidence.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">Daily AI Tasks</span>
-            <span class="slide-tag">XP System</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#f59e0b">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
-              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
-              <path d="M4 22h16"/>
-              <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Leaderboard Rankings</h3>
-          <p class="slide-desc">Compete globally. See where you rank among thousands of candidates by confidence score and selection rate.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">Global Rank</span>
-            <span class="slide-tag">MongoDB</span>
-          </div>
-        </div>
-
-        <div class="feature-slide glass-card">
-          <div class="slide-icon-wrap" style="--ic:#00f5ff">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-          </div>
-          <h3 class="slide-title">Real-time AI Analytics</h3>
-          <p class="slide-desc">Beautiful dashboards with performance trends, skill breakdowns, radial progress charts, and session history.</p>
-          <div class="slide-tags">
-            <span class="slide-tag">Live Charts</span>
-            <span class="slide-tag">Progress Tracking</span>
-          </div>
-        </div>
-
-        <!-- Duplicated for infinite loop -->
-        <div class="feature-slide glass-card" aria-hidden="true">
-          <div class="slide-icon-wrap" style="--ic:#00f5ff">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-            </svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
           </div>
           <h3 class="slide-title">AI Speech Analysis</h3>
           <p class="slide-desc">Real-time transcription with Whisper. Measures speaking rate, pitch, pauses, and filler words automatically.</p>
           <div class="slide-tags"><span class="slide-tag">Whisper AI</span><span class="slide-tag">librosa</span></div>
         </div>
-        <div class="feature-slide glass-card" aria-hidden="true">
+        <div class="feature-slide glass-card">
           <div class="slide-icon-wrap" style="--ic:#f59e0b">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-            </svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/></svg>
           </div>
           <h3 class="slide-title">Confidence Detection</h3>
           <p class="slide-desc">ML model analyzes 13 speech and behavioral features to compute a precise confidence score from 0–100.</p>
           <div class="slide-tags"><span class="slide-tag">ML Model</span><span class="slide-tag">13 Features</span></div>
         </div>
-        <div class="feature-slide glass-card" aria-hidden="true">
+        <div class="feature-slide glass-card">
           <div class="slide-icon-wrap" style="--ic:#f43f5e">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
           <h3 class="slide-title">Stress Detection</h3>
-          <p class="slide-desc">Identifies stress patterns from vocal biomarkers.</p>
-          <div class="slide-tags"><span class="slide-tag">Vocal Biomarkers</span></div>
+          <p class="slide-desc">Identifies stress patterns from vocal biomarkers. Classifies stress as Low, Medium, or High with actionable feedback.</p>
+          <div class="slide-tags"><span class="slide-tag">Vocal Biomarkers</span><span class="slide-tag">3-Level Scale</span></div>
         </div>
-
+        <div class="feature-slide glass-card">
+          <div class="slide-icon-wrap" style="--ic:#7c3aed">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 class="slide-title">Technical Evaluation</h3>
+          <p class="slide-desc">Scores technical correctness and grammar quality. Supports 6 role types including SWE, DS, ML, and Frontend.</p>
+          <div class="slide-tags"><span class="slide-tag">6 Role Types</span><span class="slide-tag">Grammar AI</span></div>
+        </div>
+        <div class="feature-slide glass-card">
+          <div class="slide-icon-wrap" style="--ic:#10b981">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 class="slide-title">Personalized Recommendations</h3>
+          <p class="slide-desc">AI generates custom improvement plans with STAR method, communication techniques, and confidence tips.</p>
+          <div class="slide-tags"><span class="slide-tag">STAR Method</span><span class="slide-tag">Custom Plans</span></div>
+        </div>
+        <div class="feature-slide glass-card">
+          <div class="slide-icon-wrap" style="--ic:#3b82f6">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3 class="slide-title">Daily Improvement Tasks</h3>
+          <p class="slide-desc">AI-curated daily exercises to build speaking fluency, reduce filler words, and boost overall confidence.</p>
+          <div class="slide-tags"><span class="slide-tag">Daily AI Tasks</span><span class="slide-tag">XP System</span></div>
+        </div>
+        <div class="feature-slide glass-card">
+          <div class="slide-icon-wrap" style="--ic:#f59e0b">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+          </div>
+          <h3 class="slide-title">Leaderboard Rankings</h3>
+          <p class="slide-desc">Compete globally. See where you rank among thousands of candidates by confidence score and selection rate.</p>
+          <div class="slide-tags"><span class="slide-tag">Global Rank</span><span class="slide-tag">Real Users</span></div>
+        </div>
+        <div class="feature-slide glass-card">
+          <div class="slide-icon-wrap" style="--ic:#00f5ff">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 class="slide-title">Real-time AI Analytics</h3>
+          <p class="slide-desc">Beautiful dashboards with performance trends, skill breakdowns, radial progress charts, and session history.</p>
+          <div class="slide-tags"><span class="slide-tag">Live Charts</span><span class="slide-tag">Progress Tracking</span></div>
+        </div>
+        <!-- Duplicates for loop -->
+        <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#00f5ff"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><h3 class="slide-title">AI Speech Analysis</h3><p class="slide-desc">Real-time transcription with Whisper. Measures speaking rate, pitch, pauses, and filler words automatically.</p><div class="slide-tags"><span class="slide-tag">Whisper AI</span><span class="slide-tag">librosa</span></div></div>
+        <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#f59e0b"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/></svg></div><h3 class="slide-title">Confidence Detection</h3><p class="slide-desc">ML model analyzes 13 speech and behavioral features to compute a precise confidence score from 0–100.</p><div class="slide-tags"><span class="slide-tag">ML Model</span><span class="slide-tag">13 Features</span></div></div>
+        <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#f43f5e"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3 class="slide-title">Stress Detection</h3><p class="slide-desc">Identifies stress patterns from vocal biomarkers.</p><div class="slide-tags"><span class="slide-tag">Vocal Biomarkers</span></div></div>
       </div>
-
-      <!-- Carousel dots -->
       <div class="carousel-dots" id="carouselDots">
         <button class="cdot active" data-idx="0"></button>
         <button class="cdot" data-idx="1"></button>
@@ -362,48 +309,23 @@
       <h2 class="section-title">How It <span class="grad-text">Works</span></h2>
       <p class="section-sub">From recording to results in under 60 seconds</p>
     </div>
-
     <div class="hiw-steps">
-      <div class="hiw-step">
-        <div class="hiw-num">01</div>
-        <div class="hiw-icon">🎤</div>
-        <h3 class="hiw-title">Record Your Response</h3>
-        <p class="hiw-desc">Answer an interview question using our in-browser recorder. No additional software needed.</p>
-        <div class="hiw-connector"></div>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">02</div>
-        <div class="hiw-icon">🤖</div>
-        <h3 class="hiw-title">AI Analyzes Speech</h3>
-        <p class="hiw-desc">Whisper transcribes, librosa extracts audio features, TextBlob measures sentiment — all in real-time.</p>
-        <div class="hiw-connector"></div>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">03</div>
-        <div class="hiw-icon">📊</div>
-        <h3 class="hiw-title">ML Models Predict</h3>
-        <p class="hiw-desc">Three specialized models predict your confidence score, stress level, and interview outcome with high accuracy.</p>
-        <div class="hiw-connector"></div>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">04</div>
-        <div class="hiw-icon">🚀</div>
-        <h3 class="hiw-title">Get Your Improvement Plan</h3>
-        <p class="hiw-desc">Receive a personalized plan with daily tasks, technique guides, and targeted exercises to maximize performance.</p>
-      </div>
+      <div class="hiw-step"><div class="hiw-num">01</div><div class="hiw-icon">🎤</div><h3 class="hiw-title">Record Your Response</h3><p class="hiw-desc">Answer an interview question using our in-browser recorder. No additional software needed.</p><div class="hiw-connector"></div></div>
+      <div class="hiw-step"><div class="hiw-num">02</div><div class="hiw-icon">🤖</div><h3 class="hiw-title">AI Analyzes Speech</h3><p class="hiw-desc">Whisper transcribes, librosa extracts audio features, TextBlob measures sentiment — all in real-time.</p><div class="hiw-connector"></div></div>
+      <div class="hiw-step"><div class="hiw-num">03</div><div class="hiw-icon">📊</div><h3 class="hiw-title">ML Models Predict</h3><p class="hiw-desc">Three specialized models predict your confidence score, stress level, and interview outcome with high accuracy.</p><div class="hiw-connector"></div></div>
+      <div class="hiw-step"><div class="hiw-num">04</div><div class="hiw-icon">🚀</div><h3 class="hiw-title">Get Your Improvement Plan</h3><p class="hiw-desc">Receive a personalized plan with daily tasks, technique guides, and targeted exercises to maximize performance.</p></div>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       TOP LEADERBOARD PREVIEW
+       LEADERBOARD PREVIEW (Real users only)
   ══════════════════════════════════════════ -->
   <section class="lb-section" id="leaderboard-section">
     <div class="section-header">
       <div class="section-tag">Community</div>
       <h2 class="section-title">Top <span class="grad-text">Performers</span> This Week</h2>
-      <p class="section-sub">See how the best candidates are performing on the platform</p>
+      <p class="section-sub">Real candidates on the platform — compete, improve, and climb the ranks</p>
     </div>
-
     <div class="lb-table-wrap glass-card">
       <div class="lb-table-head">
         <span>Rank</span>
@@ -413,26 +335,21 @@
         <span>Streak</span>
       </div>
       <div class="lb-table-body" id="lbTableBody">
-        <!-- Injected by landing.js -->
         <div class="lb-row lb-row-loading">
           <div class="lb-loading-dots"><span></span><span></span><span></span></div>
         </div>
       </div>
     </div>
-
     <div class="lb-cta">
       <a href="auth.html?mode=signup" class="btn-lb-join">
         Join the Leaderboard
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       PRICING
+       PRICING — UPDATED
   ══════════════════════════════════════════ -->
   <section class="pricing-section" id="pricing">
     <div class="section-header">
@@ -442,21 +359,23 @@
     </div>
 
     <div class="pricing-grid">
+      <!-- STARTER — Free -->
       <div class="pricing-card glass-card">
         <div class="pricing-tier">Starter</div>
         <div class="pricing-price">Free</div>
         <div class="pricing-period">Forever</div>
         <ul class="pricing-features">
-          <li><span class="pf-check">✓</span> 5 interviews / month</li>
+          <li><span class="pf-check">✓</span> 20 interviews / month</li>
           <li><span class="pf-check">✓</span> Speech analysis</li>
           <li><span class="pf-check">✓</span> Confidence scoring</li>
           <li><span class="pf-check">✓</span> Basic recommendations</li>
-          <li><span class="pf-x">✗</span> Daily tasks</li>
-          <li><span class="pf-x">✗</span> Leaderboard access</li>
+          <li><span class="pf-check">✓</span> Daily tasks</li>
+          <li><span class="pf-check">✓</span> Leaderboard access</li>
         </ul>
         <a href="auth.html?mode=signup" class="btn-pricing-secondary">Get Started Free</a>
       </div>
 
+      <!-- PRO — Most Popular -->
       <div class="pricing-card pricing-featured glass-card">
         <div class="pricing-popular">Most Popular</div>
         <div class="pricing-tier">Pro</div>
@@ -469,10 +388,13 @@
           <li><span class="pf-check">✓</span> AI improvement plans</li>
           <li><span class="pf-check">✓</span> Daily tasks & XP</li>
           <li><span class="pf-check">✓</span> Leaderboard access</li>
+          <li><span class="pf-check">✓</span> Online interview via video</li>
+          <li><span class="pf-check">✓</span> Live speech analyzer</li>
         </ul>
         <a href="auth.html?mode=signup" class="btn-pricing-primary">Start Pro Free Trial</a>
       </div>
 
+      <!-- ENTERPRISE -->
       <div class="pricing-card glass-card">
         <div class="pricing-tier">Enterprise</div>
         <div class="pricing-price">Custom</div>
@@ -485,7 +407,44 @@
           <li><span class="pf-check">✓</span> Priority support</li>
           <li><span class="pf-check">✓</span> White-label option</li>
         </ul>
-        <a href="mailto:contact@interviewai.dev" class="btn-pricing-secondary">Contact Us</a>
+        <a href="#contact-creator" class="btn-pricing-secondary">Contact the Creator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       CONTACT THE CREATOR
+  ══════════════════════════════════════════ -->
+  <section class="cta-section" id="contact-creator" style="padding-top:0">
+    <div class="cta-inner glass-card" style="max-width:720px;margin:0 auto">
+      <div class="cta-orb"></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap;justify-content:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00f5ff,#7c3aed);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:#000;flex-shrink:0">SG</div>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">SAI GANESH</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px">Creator & Developer · InterviewAI</div>
+        </div>
+      </div>
+      <h2 class="cta-title" style="font-size:22px">Get in Touch</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:24px;line-height:1.6">Interested in Enterprise plans, collaboration, or just want to say hello? Reach out directly.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+        <a href="mailto:saiganesh68n@gmail.com" style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:12px;background:rgba(0,245,255,0.07);border:1px solid rgba(0,245,255,0.15);color:#fff;text-decoration:none;font-size:13px;transition:all 0.2s" onmouseover="this.style.background='rgba(0,245,255,0.14)'" onmouseout="this.style.background='rgba(0,245,255,0.07)'">
+          <span style="font-size:18px">📧</span>
+          <div><div style="font-weight:600;font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Email</div>saiganesh68n@gmail.com</div>
+        </a>
+        <a href="tel:+919391594051" style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:12px;background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);color:#fff;text-decoration:none;font-size:13px;transition:all 0.2s" onmouseover="this.style.background='rgba(16,185,129,0.14)'" onmouseout="this.style.background='rgba(16,185,129,0.07)'">
+          <span style="font-size:18px">📱</span>
+          <div><div style="font-weight:600;font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Phone / WhatsApp</div>+91 93915 94051</div>
+        </a>
+        <a href="https://github.com/sai68n" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;padding:14px;border-radius:12px;background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.15);color:#fff;text-decoration:none;font-size:13px;transition:all 0.2s" onmouseover="this.style.background='rgba(124,58,237,0.14)'" onmouseout="this.style.background='rgba(124,58,237,0.07)'">
+          <span style="font-size:18px">💻</span>
+          <div><div style="font-weight:600;font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">GitHub</div>github.com/sai68n</div>
+        </a>
+      </div>
+
+      <div style="padding:14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);font-size:12px;color:rgba(255,255,255,0.45);text-align:center">
+        🕐 Usually responds within 24 hours · Based in India (IST)
       </div>
     </div>
   </section>
@@ -500,9 +459,7 @@
       <p class="cta-sub">Join thousands of candidates who improved their performance with InterviewAI.</p>
       <div class="cta-actions">
         <button class="btn-cta-primary" id="ctaAnalyzeBtn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Start Analyzing Now — It's Free
         </button>
       </div>
@@ -510,7 +467,7 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       FOOTER
+       FOOTER — UPDATED with real info
   ══════════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer-inner">
@@ -524,22 +481,19 @@
           <span style="font-family:var(--font-display);font-weight:700;font-size:16px">Interview<span style="color:var(--cyan)">AI</span></span>
         </a>
         <p class="footer-tagline">AI-powered interview coaching for the next generation of candidates.</p>
-        <div class="footer-social">
-          <a href="https://github.com" target="_blank" class="social-link" aria-label="GitHub">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
+        <div class="creator-badge">
+          <div class="cb-dot"></div>
+          Created by <strong>SAI GANESH</strong> &nbsp;·&nbsp; <span style="opacity:0.6">sai68n!</span>
+        </div>
+        <div class="footer-social" style="margin-top:14px">
+          <a href="https://github.com/sai68n" target="_blank" class="social-link" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
           </a>
-          <a href="#" class="social-link" aria-label="Twitter/X">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+          <a href="mailto:saiganesh68n@gmail.com" class="social-link" aria-label="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </a>
-          <a href="https://linkedin.com" target="_blank" class="social-link" aria-label="LinkedIn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/>
-              <circle cx="4" cy="4" r="2"/>
-            </svg>
+          <a href="tel:+919391594051" class="social-link" aria-label="Phone">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.17 6.17l.9-.9a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.92 17z"/></svg>
           </a>
         </div>
       </div>
@@ -561,20 +515,76 @@
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Contact</div>
-          <a href="mailto:contact@interviewai.dev" class="footer-link">contact@interviewai.dev</a>
-          <a href="https://github.com" class="footer-link" target="_blank">GitHub Repository</a>
-          <a href="#" class="footer-link">Privacy Policy</a>
-          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="mailto:saiganesh68n@gmail.com" class="footer-link">saiganesh68n@gmail.com</a>
+          <a href="tel:+919391594051" class="footer-link">+91 93915 94051</a>
+          <a href="https://github.com/sai68n" class="footer-link" target="_blank">GitHub · sai68n</a>
+          <a href="#privacy" class="footer-link">Privacy Policy</a>
+          <a href="#terms" class="footer-link">Terms of Service</a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© 2025 InterviewAI. All rights reserved.</span>
+      <span>© 2025 InterviewAI. Built by <strong style="color:#00f5ff">Sai Ganesh</strong>. All rights reserved.</span>
       <span class="footer-powered">Built with Whisper · FastAPI · MongoDB</span>
     </div>
+
+    <!-- Privacy Policy (inline anchor target) -->
+    <div id="privacy" style="display:none"></div>
+    <div id="terms" style="display:none"></div>
   </footer>
 
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9000;overflow-y:auto;padding:40px 16px">
+    <div style="max-width:680px;margin:0 auto;background:#0d1220;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Privacy Policy</h2>
+        <button onclick="document.getElementById('privacyModal').style.display='none'" style="background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8">
+        <p style="margin-bottom:12px"><strong style="color:#fff">Last updated:</strong> June 2025</p>
+        <p style="margin-bottom:12px">InterviewAI ("we", "our", or "us") is a project built and maintained by Sai Ganesh (saiganesh68n@gmail.com). We respect your privacy.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Data we collect:</strong> Email address, name, and interview performance data you voluntarily submit. All data is stored locally in your browser (localStorage) and is not transmitted to third-party advertisers.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Audio data:</strong> Speech recordings are sent to our backend (Railway) solely for analysis and are not stored permanently.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Your rights:</strong> You can delete your account and all associated data at any time from the Profile page.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Contact:</strong> saiganesh68n@gmail.com | +91 93915 94051</p>
+        <p>This platform does not display ads or sell user data.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Service Modal -->
+  <div id="termsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9000;overflow-y:auto;padding:40px 16px">
+    <div style="max-width:680px;margin:0 auto;background:#0d1220;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h2 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800">Terms of Service</h2>
+        <button onclick="document.getElementById('termsModal').style.display='none'" style="background:rgba(255,255,255,0.08);border:none;color:#fff;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px">✕</button>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8">
+        <p style="margin-bottom:12px"><strong style="color:#fff">Last updated:</strong> June 2025</p>
+        <p style="margin-bottom:8px">By using InterviewAI, you agree to the following terms:</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Usage:</strong> This platform is for personal interview practice only. Commercial resale or misuse is prohibited.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Accuracy:</strong> AI predictions are for guidance purposes only and do not guarantee real-world interview outcomes.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Account:</strong> You are responsible for keeping your credentials secure. We are not liable for unauthorized access.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Intellectual Property:</strong> All code, design, and AI models are the property of Sai Ganesh. Unauthorized reproduction is prohibited.</p>
+        <p>Questions? Email saiganesh68n@gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Wire up privacy/terms footer links to modals
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('a[href="#privacy"]')?.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('privacyModal').style.display = 'block';
+      });
+      document.querySelector('a[href="#terms"]')?.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById('termsModal').style.display = 'block';
+      });
+    });
+  </script>
   <script src="js/landing.js"></script>
 </body>
 </html>

@@ -41,29 +41,12 @@ const DOM = {
   logoutLink:    () => document.getElementById('logoutLink'),
 };
 
-/* ── Recommendation data bank ───────────────────────────────
-   Each entry has:
-   - id, category, icon, title, shortDesc, improvement
-   - priority: 'high' | 'med' | 'low'
-   - accent color CSS var
-   - tags[]
-   - plan: { techniques[], exercises[], commTips[], techTips[], confidenceTips[] }
-   Recommendations are generated dynamically based on user's
-   interview history + scores. If no history exists, defaults
-   are shown from the full bank.
-─────────────────────────────────────────────────────────────── */
 const REC_BANK = [
   {
-    id: 'filler-words',
-    category: 'Speech',
-    icon: '🗣️',
-    accent: '#00f5ff',
-    iconBg: 'rgba(0,245,255,0.1)',
-    tags: ['Speech', 'Clarity'],
-    title: 'Reduce Filler Words',
+    id: 'filler-words', category: 'Speech', icon: '🗣️', accent: '#00f5ff', iconBg: 'rgba(0,245,255,0.1)',
+    tags: ['Speech', 'Clarity'], title: 'Reduce Filler Words',
     shortDesc: 'Excessive use of "um", "uh", "like", and "you know" reduces perceived confidence and clarity. Interviewers notice more than you think.',
-    improvement: '+18% confidence when eliminated',
-    priority: 'high',
+    improvement: '+18% confidence when eliminated', priority: 'high',
     plan: {
       techniques: [
         'Record yourself answering a question and count every filler word — awareness is the first fix.',
@@ -90,16 +73,10 @@ const REC_BANK = [
     },
   },
   {
-    id: 'speaking-rate',
-    category: 'Speech',
-    icon: '⏱️',
-    accent: '#00f5ff',
-    iconBg: 'rgba(0,245,255,0.1)',
-    tags: ['Speech', 'Pacing'],
-    title: 'Optimise Speaking Rate',
+    id: 'speaking-rate', category: 'Speech', icon: '⏱️', accent: '#00f5ff', iconBg: 'rgba(0,245,255,0.1)',
+    tags: ['Speech', 'Pacing'], title: 'Optimise Speaking Rate',
     shortDesc: 'Speaking too fast makes you sound nervous; too slow loses the listener. The optimal interview pace is 120–140 words per minute.',
-    improvement: '+22% clarity score at optimal pace',
-    priority: 'med',
+    improvement: '+22% clarity score at optimal pace', priority: 'med',
     plan: {
       techniques: [
         'Record a 2-minute answer and use a word count ÷ time formula to measure your wpm.',
@@ -124,16 +101,10 @@ const REC_BANK = [
     },
   },
   {
-    id: 'confidence-boost',
-    category: 'Confidence',
-    icon: '💪',
-    accent: '#7c3aed',
-    iconBg: 'rgba(124,58,237,0.1)',
-    tags: ['Confidence', 'Mindset'],
-    title: 'Build Interview Confidence',
+    id: 'confidence-boost', category: 'Confidence', icon: '💪', accent: '#7c3aed', iconBg: 'rgba(124,58,237,0.1)',
+    tags: ['Confidence', 'Mindset'], title: 'Build Interview Confidence',
     shortDesc: 'Your confidence score fell below 70%. Confidence is trainable — specific drills and mindset shifts produce measurable results within 2 weeks.',
-    improvement: '+30% confidence with 2-week plan',
-    priority: 'high',
+    improvement: '+30% confidence with 2-week plan', priority: 'high',
     plan: {
       techniques: [
         'Power posing: stand in a confident posture (hands on hips, upright) for 2 minutes before each session.',
@@ -161,16 +132,10 @@ const REC_BANK = [
     },
   },
   {
-    id: 'stress-management',
-    category: 'Stress',
-    icon: '🧠',
-    accent: '#f43f5e',
-    iconBg: 'rgba(244,63,94,0.1)',
-    tags: ['Stress', 'Mental'],
-    title: 'Manage Interview Stress',
+    id: 'stress-management', category: 'Stress', icon: '🧠', accent: '#f43f5e', iconBg: 'rgba(244,63,94,0.1)',
+    tags: ['Stress', 'Mental'], title: 'Manage Interview Stress',
     shortDesc: 'High stress levels are degrading your speech quality and answer coherence. These techniques reduce cortisol measurably and are interview-proven.',
-    improvement: 'Avg. 35% stress reduction in sessions',
-    priority: 'high',
+    improvement: 'Avg. 35% stress reduction in sessions', priority: 'high',
     plan: {
       techniques: [
         'Physiological sigh: double-inhale through the nose, long exhale through the mouth — fastest known stress reducer.',
@@ -185,7 +150,7 @@ const REC_BANK = [
       ],
       commTips: [
         'Treat the interviewer as a colleague, not a judge — this cognitive shift lowers threat response.',
-        'Ask a clarifying question early ("Could you tell me more about X aspect?") — it buys thinking time and signals engagement.',
+        'Ask a clarifying question early — it buys thinking time and signals engagement.',
       ],
       techTips: [],
       confidenceTips: [
@@ -195,32 +160,26 @@ const REC_BANK = [
     },
   },
   {
-    id: 'star-method',
-    category: 'Communication',
-    icon: '⭐',
-    accent: '#f59e0b',
-    iconBg: 'rgba(245,158,11,0.1)',
-    tags: ['Communication', 'Structure'],
-    title: 'Master the STAR Method',
+    id: 'star-method', category: 'Communication', icon: '⭐', accent: '#f59e0b', iconBg: 'rgba(245,158,11,0.1)',
+    tags: ['Communication', 'Structure'], title: 'Master the STAR Method',
     shortDesc: 'Unstructured answers score 40% lower on clarity metrics. The STAR framework (Situation, Task, Action, Result) is the single highest-impact communication skill for interviews.',
-    improvement: '+40% answer clarity score',
-    priority: 'high',
+    improvement: '+40% answer clarity score', priority: 'high',
     plan: {
       techniques: [
         'Write out 6 STAR stories covering: leadership, conflict, failure, success, teamwork, initiative.',
         'Time your STAR answers — target 90 seconds; anything over 2 minutes loses the interviewer.',
-        'Lead with the Result first ("I reduced deployment time by 60%...") then walk back through STAR.',
-        'Quantify every Result with a number, percentage, or time metric — vague results are weak results.',
+        'Lead with the Result first then walk back through STAR.',
+        'Quantify every Result with a number, percentage, or time metric.',
       ],
       exercises: [
         '"STAR sprint" — pick a random behaviour question, write a STAR outline in under 3 minutes.',
-        'Record 3 STAR answers this week; critique your Situation (too long?) and Result (too vague?).',
-        'Reverse-engineer 5 job descriptions — identify the top 3 competencies tested and pre-load STAR stories.',
+        'Record 3 STAR answers this week; critique your Situation and Result.',
+        'Reverse-engineer 5 job descriptions — identify top competencies and pre-load STAR stories.',
       ],
       commTips: [
         'Signal your structure: "Let me give you a specific example..." puts the interviewer into listening mode.',
         'Use the Action section to highlight your thinking process, not just what you did.',
-        'The Result should answer "so what?" — always include impact on team, business, or customer.',
+        'The Result should answer "so what?" — always include impact.',
       ],
       techTips: [],
       confidenceTips: [
@@ -230,176 +189,145 @@ const REC_BANK = [
     },
   },
   {
-    id: 'technical-accuracy',
-    category: 'Technical',
-    icon: '⚙️',
-    accent: '#3b82f6',
-    iconBg: 'rgba(59,130,246,0.1)',
-    tags: ['Technical', 'Problem-Solving'],
-    title: 'Improve Technical Accuracy',
+    id: 'technical-accuracy', category: 'Technical', icon: '⚙️', accent: '#3b82f6', iconBg: 'rgba(59,130,246,0.1)',
+    tags: ['Technical', 'Problem-Solving'], title: 'Improve Technical Accuracy',
     shortDesc: 'Technical correctness below 8/10 significantly reduces selection probability. Structured preparation across data structures, algorithms, and system design is required.',
-    improvement: '+45% selection rate above 8/10',
-    priority: 'high',
+    improvement: '+45% selection rate above 8/10', priority: 'high',
     plan: {
       techniques: [
         'Diagnose your weakest area first: Algorithms, Data Structures, System Design, or Domain Knowledge.',
-        'Solve 1 LeetCode problem daily — rotate Easy (Mon/Wed/Fri), Medium (Tue/Thu), Hard (Sat).',
+        'Solve 1 LeetCode problem daily — rotate Easy/Medium/Hard.',
         'Think aloud when solving — narrate your approach before writing a single line of code.',
-        'After each wrong answer, write a 3-sentence post-mortem: what failed, why, how to fix.',
+        'After each wrong answer, write a 3-sentence post-mortem.',
       ],
       exercises: [
-        '15-minute whiteboard drill: solve a problem without IDE autocomplete or documentation.',
-        'Explain a technical concept (e.g., binary search) to a non-technical friend — Feynman technique.',
-        'Review 2 system design case studies (Grokking the System Design Interview) per week.',
-        'Build a "knowledge map" of your role — list every topic that can be tested and rate confidence 1–5.',
+        '15-minute whiteboard drill without IDE autocomplete or documentation.',
+        'Explain a technical concept to a non-technical friend — Feynman technique.',
+        'Review 2 system design case studies per week.',
+        'Build a "knowledge map" of your role and rate confidence 1–5 per topic.',
       ],
       commTips: [
-        'If you\'re stuck, narrate your thinking: "I\'m considering an O(n log n) approach here because..." — partial credit is real.',
-        'Ask clarifying questions about constraints before solving — it signals senior-level thinking.',
+        'If stuck, narrate your thinking aloud — partial credit is real.',
+        'Ask clarifying questions about constraints before solving.',
       ],
       techTips: [
-        'Pattern recognition beats memorisation: learn the 14 core patterns (sliding window, two pointers, BFS/DFS, etc.).',
-        'For system design: always start with requirements → estimation → API design → DB schema → component diagram.',
-        'Big-O analysis should be second nature — practice stating complexity before and after optimisation.',
+        'Pattern recognition beats memorisation: learn the core patterns (sliding window, two pointers, BFS/DFS, etc.).',
+        'For system design: start with requirements → estimation → API design → DB schema → component diagram.',
+        'Big-O analysis should be second nature.',
       ],
       confidenceTips: [
-        'Technical confidence comes from reps, not intelligence — 30 days of daily practice creates visible change.',
+        'Technical confidence comes from reps, not intelligence.',
       ],
     },
   },
   {
-    id: 'eye-contact',
-    category: 'Communication',
-    icon: '👁️',
-    accent: '#10b981',
-    iconBg: 'rgba(16,185,129,0.1)',
-    tags: ['Communication', 'Non-verbal'],
-    title: 'Strengthen Eye Contact',
+    id: 'eye-contact', category: 'Communication', icon: '👁️', accent: '#10b981', iconBg: 'rgba(16,185,129,0.1)',
+    tags: ['Communication', 'Non-verbal'], title: 'Strengthen Eye Contact',
     shortDesc: 'Eye contact below 7/10 signals low confidence to interviewers. In video interviews, looking at the camera lens — not the screen — is the equivalent of direct eye contact.',
-    improvement: '+25% perceived confidence score',
-    priority: 'med',
+    improvement: '+25% perceived confidence score', priority: 'med',
     plan: {
       techniques: [
-        'In video calls: place a small sticker dot at camera level on your monitor as a focal point.',
-        'Use the triangle technique: alternate between both eyes and the forehead in 3–5 second intervals.',
-        'Natural breaks: look away briefly when thinking (up and to the side) — avoids the "staring" effect.',
-        'Record your mock interviews and watch them back — you will immediately feel what interviewers feel.',
+        'In video calls: place a small sticker dot at camera level as a focal point.',
+        'Use the triangle technique: alternate between both eyes and the forehead.',
+        'Look away briefly when thinking (up and to the side) — avoids the staring effect.',
+        'Record mock interviews and watch them back.',
       ],
       exercises: [
-        '30-second mirror drill: hold eye contact with your own reflection while speaking — build the habit.',
-        'Watch 3 TED Talk speakers for 5 minutes each; note specifically how and when they use eye contact.',
-        'In daily conversations, challenge yourself to maintain eye contact for entire sentences.',
+        '30-second mirror drill: hold eye contact with your own reflection while speaking.',
+        'Watch TED Talk speakers; note how and when they use eye contact.',
+        'In daily conversations, maintain eye contact for entire sentences.',
       ],
       commTips: [
         'Nodding while maintaining eye contact signals understanding without interruption.',
-        'Smile naturally when making eye contact — warmth + confidence is the winning combination.',
+        'Smile naturally when making eye contact.',
       ],
       techTips: [],
       confidenceTips: [
-        'Strong eye contact is the fastest visual signal of confidence — it costs zero preparation time.',
+        'Strong eye contact is the fastest visual signal of confidence.',
       ],
     },
   },
   {
-    id: 'sentiment-positive',
-    category: 'Communication',
-    icon: '😊',
-    accent: '#10b981',
-    iconBg: 'rgba(16,185,129,0.1)',
-    tags: ['Communication', 'Tone'],
-    title: 'Improve Positive Sentiment',
+    id: 'sentiment-positive', category: 'Communication', icon: '😊', accent: '#10b981', iconBg: 'rgba(16,185,129,0.1)',
+    tags: ['Communication', 'Tone'], title: 'Improve Positive Sentiment',
     shortDesc: 'Negative or neutral sentiment in your answers reduces engagement and likability scores. Interviewers make hiring decisions emotionally first, rationally second.',
-    improvement: '+20% interviewer engagement',
-    priority: 'med',
+    improvement: '+20% interviewer engagement', priority: 'med',
     plan: {
       techniques: [
-        'Reframe every weakness as a growth story: "I used to struggle with X; here\'s what I did about it."',
-        'Use positively charged language: "opportunity" instead of "problem", "learning" instead of "failure".',
-        'Genuine enthusiasm: identify 3 specific things about the role/company you genuinely find exciting — mention them.',
-        'Energy calibration: speak slightly louder and with slightly more variation in pitch than feels natural.',
+        'Reframe every weakness as a growth story.',
+        'Use positively charged language: "opportunity" instead of "problem".',
+        'Identify 3 specific things about the role/company you genuinely find exciting.',
+        'Speak with slightly more energy and pitch variation than feels natural.',
       ],
       exercises: [
-        'Audit your 3 most recent answers — highlight every negative word or phrase and rewrite each one positively.',
-        'Practice telling a "failure story" with a positive framing arc three times until it feels natural.',
+        'Audit your 3 most recent answers — rewrite negative phrases positively.',
+        'Practice telling a "failure story" with a positive framing arc.',
       ],
       commTips: [
-        'Open every answer with a genuine positive micro-statement: "Great question — this is something I\'ve thought a lot about."',
-        'Close every answer with forward-looking energy: "...and I\'m excited to bring that approach here."',
+        'Open answers with a genuine positive micro-statement.',
+        'Close answers with forward-looking energy.',
       ],
       techTips: [],
       confidenceTips: [
-        'Positive sentiment is contagious — interviewers feel better talking to you and attribute it to your potential.',
+        'Positive sentiment is contagious — interviewers attribute it to your potential.',
       ],
     },
   },
   {
-    id: 'grammar-clarity',
-    category: 'Communication',
-    icon: '✍️',
-    accent: '#f59e0b',
-    iconBg: 'rgba(245,158,11,0.1)',
-    tags: ['Communication', 'Grammar'],
-    title: 'Sharpen Grammar & Clarity',
+    id: 'grammar-clarity', category: 'Communication', icon: '✍️', accent: '#f59e0b', iconBg: 'rgba(245,158,11,0.1)',
+    tags: ['Communication', 'Grammar'], title: 'Sharpen Grammar & Clarity',
     shortDesc: 'Grammar errors and unclear sentence construction reduce your credibility, particularly for senior or client-facing roles. Small improvements here have outsized impact.',
-    improvement: '+15% professional credibility',
-    priority: 'low',
+    improvement: '+15% professional credibility', priority: 'low',
     plan: {
       techniques: [
-        'Subject-verb agreement check: before every answer, mentally confirm who is doing what.',
-        'Avoid double negatives ("I don\'t have no experience") — rephrase as a positive statement.',
-        'Use active voice: "I built the API" not "The API was built by me."',
-        'Short sentences are safer than long ones — break complex thoughts into two sentences.',
+        'Subject-verb agreement check before every answer.',
+        'Avoid double negatives.',
+        'Use active voice.',
+        'Short sentences are safer than long ones.',
       ],
       exercises: [
-        'Write out your 5 core interview answers — read them aloud to catch grammatical awkwardness.',
-        'Use Grammarly or LanguageTool on your written answer scripts before recording.',
-        'Read the Economist or Harvard Business Review for 10 minutes daily — absorbs professional prose structure.',
+        'Read your core interview answers aloud to catch awkwardness.',
+        'Use Grammarly or LanguageTool on written answer scripts.',
+        'Read quality long-form journalism 10 minutes daily.',
       ],
       commTips: [
-        'When unsure of a word mid-sentence, choose a simpler synonym — clarity beats vocabulary.',
-        'Pause slightly before key nouns or numbers — it prevents grammatical scrambling.',
+        'When unsure of a word, choose a simpler synonym.',
+        'Pause slightly before key nouns or numbers.',
       ],
       techTips: [],
       confidenceTips: [
-        'Grammar confidence comes from writing practice — journaling daily for 2 weeks creates noticeably better spoken structure.',
+        'Grammar confidence comes from writing practice.',
       ],
     },
   },
   {
-    id: 'response-length',
-    category: 'Speech',
-    icon: '📏',
-    accent: '#00f5ff',
-    iconBg: 'rgba(0,245,255,0.1)',
-    tags: ['Speech', 'Conciseness'],
-    title: 'Calibrate Response Length',
+    id: 'response-length', category: 'Speech', icon: '📏', accent: '#00f5ff', iconBg: 'rgba(0,245,255,0.1)',
+    tags: ['Speech', 'Conciseness'], title: 'Calibrate Response Length',
     shortDesc: 'Responses under 50 words signal unpreparedness; over 300 words lose the interviewer\'s focus. The target window is 100–200 words per behavioural answer.',
-    improvement: 'Optimal engagement at 120–180 words',
-    priority: 'med',
+    improvement: 'Optimal engagement at 120–180 words', priority: 'med',
     plan: {
       techniques: [
-        'Time your answers — aim for 60–90 seconds for behavioural, 3–5 minutes for technical deep-dives.',
-        'Write your answer, count the words, then cut 30% — every sentence should earn its place.',
-        'Use a "core + expansion" structure: deliver the key point in 30 seconds, expand only if asked.',
-        'Watch for the "ramble flag": if you hear yourself saying "...and also..." three times, stop and summarise.',
+        'Time your answers — aim for 60–90 seconds behavioural, 3–5 minutes technical.',
+        'Write your answer, count words, then cut 30%.',
+        'Use a "core + expansion" structure.',
+        'Watch for the "ramble flag" and stop to summarise.',
       ],
       exercises: [
-        '"1-minute drill" — answer any question in exactly 60 seconds. Repeat with 90-second cap.',
-        'Record two versions of the same answer: 45 seconds and 2 minutes. Identify which is stronger.',
+        '"1-minute drill" — answer any question in exactly 60 seconds.',
+        'Record two versions of the same answer at different lengths.',
       ],
       commTips: [
-        'End answers cleanly: "...so that\'s my approach — happy to go deeper on any part." signals control.',
-        'Shorter, clearer answers in early interview rounds leave room for follow-up — which you welcome.',
+        'End answers cleanly, signalling control.',
+        'Shorter answers in early rounds leave room for follow-up.',
       ],
       techTips: [],
       confidenceTips: [
-        'Concise answers signal clarity of thought, not lack of depth — brevity is a senior-level skill.',
+        'Concise answers signal clarity of thought, not lack of depth.',
       ],
     },
   },
 ];
 
-/* ── Skill progress data derived from history ─────────────── */
 const SKILL_KEYS = [
   { key: 'confidence', label: 'Confidence',    color: 'linear-gradient(90deg,#00f5ff,#7c3aed)' },
   { key: 'technical',  label: 'Technical',     color: 'linear-gradient(90deg,#3b82f6,#7c3aed)' },
@@ -408,11 +336,9 @@ const SKILL_KEYS = [
   { key: 'grammar',    label: 'Grammar',       color: 'linear-gradient(90deg,#f59e0b,#f43f5e)' },
 ];
 
-/* ── Utility ────────────────────────────────────────────────── */
 function showToast(msg, type = 'info') {
   const t = DOM.toast();
   const colors = { success: '#10b981', error: '#f43f5e', info: '#00f5ff', warn: '#f59e0b' };
-  t.style.borderLeftColor = colors[type] || colors.info;
   t.style.borderLeft = `3px solid ${colors[type] || colors.info}`;
   t.textContent = msg;
   t.classList.add('show');
@@ -445,10 +371,13 @@ function animateCounter(el, target, duration = 700) {
   requestAnimationFrame(step);
 }
 
-/* ── Load user + history ────────────────────────────────────── */
+/* ── FIX: read the per-user key that script.js actually saves
+   real interview results to (interviewai_history_<email>),
+   falling back to the shared unsuffixed key for compatibility. */
 function loadUserData() {
-  State.user    = safeGet('interviewai_user') || { name: 'Guest User', email: 'guest@interviewai.com' };
-  State.history = safeGet('interviewai_history') || [];
+  State.user = safeGet('interviewai_user') || { name: 'Guest User', email: 'guest@interviewai.com' };
+  const email = State.user.email || 'guest';
+  State.history = safeGet('interviewai_history_' + email) || safeGet('interviewai_history') || [];
   State.completedPlans = new Set(safeGet('interviewai_completed_plans') || []);
   renderUserInfo();
 }
@@ -460,17 +389,15 @@ function renderUserInfo() {
   if (DOM.avatarSm()) DOM.avatarSm().textContent = initials(u.name);
 }
 
-/* ── Generate recommendations from history ──────────────────── */
 function generateRecommendations() {
   const history = State.history;
 
   if (!history.length) {
-    // No history — show all recs from bank with defaults
     State.recommendations = REC_BANK.map(r => ({ ...r }));
     return;
   }
 
-  const recent = history.slice(-5); // last 5 sessions
+  const recent = history.slice(-5);
   const avg = field => recent.reduce((s, h) => s + (parseFloat(h[field]) || 0), 0) / recent.length;
 
   const avgConf   = avg('confidence_score');
@@ -486,7 +413,6 @@ function generateRecommendations() {
 
   const selected = [];
 
-  // Always prioritise by score gaps
   if (avgFiller > 3)      selected.push({ ...REC_BANK.find(r => r.id === 'filler-words'),  priority: avgFiller > 6 ? 'high' : 'med' });
   if (avgConf < 70)       selected.push({ ...REC_BANK.find(r => r.id === 'confidence-boost') });
   if (stressHigh >= 2)    selected.push({ ...REC_BANK.find(r => r.id === 'stress-management') });
@@ -498,7 +424,6 @@ function generateRecommendations() {
   if (avgRate > 160 || avgRate < 80) selected.push({ ...REC_BANK.find(r => r.id === 'speaking-rate'), priority: 'high' });
   if (avgResp < 50 || avgResp > 300) selected.push({ ...REC_BANK.find(r => r.id === 'response-length') });
 
-  // Pad with remaining recs if < 4
   const usedIds = new Set(selected.map(r => r.id));
   for (const r of REC_BANK) {
     if (!usedIds.has(r.id)) { selected.push({ ...r }); usedIds.add(r.id); }
@@ -508,11 +433,10 @@ function generateRecommendations() {
   State.recommendations = selected;
 }
 
-/* ── Compute skill progress percentages ─────────────────────── */
 function computeSkillProgress() {
   const history = State.history;
   if (!history.length) {
-    return SKILL_KEYS.map(s => ({ ...s, pct: 0, label: s.label }));
+    return SKILL_KEYS.map(s => ({ ...s, pct: 0 }));
   }
   const recent = history.slice(-3);
   const avg = field => recent.reduce((s, h) => s + (parseFloat(h[field]) || 0), 0) / recent.length;
@@ -521,12 +445,11 @@ function computeSkillProgress() {
     { ...SKILL_KEYS[0], pct: Math.min(100, Math.round(avg('confidence_score') || 0)) },
     { ...SKILL_KEYS[1], pct: Math.min(100, Math.round((avg('Technical_Correctness') || 0) * 10)) },
     { ...SKILL_KEYS[2], pct: Math.min(100, Math.round((avg('Communication_Score') || 0) * 10)) },
-    { ...SKILL_KEYS[3], pct: Math.min(100, Math.round(avg('stress_pct') || Math.max(0, 100 - (history.filter(h => (h.stress_level||'').toLowerCase() === 'high').length / history.length) * 100))) },
+    { ...SKILL_KEYS[3], pct: Math.min(100, Math.round(Math.max(0, 100 - (history.filter(h => (h.stress_level||'').toLowerCase() === 'high').length / history.length) * 100))) },
     { ...SKILL_KEYS[4], pct: Math.min(100, Math.round((avg('Grammar_Score') || 0) * 10)) },
   ];
 }
 
-/* ── Stats strip ────────────────────────────────────────────── */
 function renderStats() {
   const recs     = State.recommendations;
   const highCount = recs.filter(r => r.priority === 'high').length;
@@ -539,7 +462,6 @@ function renderStats() {
   animateCounter(DOM.statCompleted(), completed);
 }
 
-/* ── Filter tabs ────────────────────────────────────────────── */
 function renderFilterTabs() {
   const categories = ['All', ...new Set(State.recommendations.map(r => r.category))];
   const container  = DOM.filterTabs();
@@ -562,16 +484,13 @@ function renderFilterTabs() {
   });
 }
 
-/* ── Apply search / category filter / sort ──────────────────── */
 function applyFiltersAndRender() {
   let recs = [...State.recommendations];
 
-  // Category filter
   if (State.activeCategory !== 'all') {
     recs = recs.filter(r => r.category === State.activeCategory);
   }
 
-  // Search filter
   if (State.searchQuery) {
     const q = State.searchQuery.toLowerCase();
     recs = recs.filter(r =>
@@ -582,7 +501,6 @@ function applyFiltersAndRender() {
     );
   }
 
-  // Sort
   if (State.sortMode === 'priority') {
     const order = { high: 0, med: 1, low: 2 };
     recs.sort((a, b) => (order[a.priority] ?? 9) - (order[b.priority] ?? 9));
@@ -594,7 +512,6 @@ function applyFiltersAndRender() {
   renderRecCards();
 }
 
-/* ── Render recommendation cards ────────────────────────────── */
 function renderRecCards() {
   const container = DOM.recCards();
   if (!container) return;
@@ -616,7 +533,6 @@ function renderRecCards() {
     container.appendChild(card);
   });
 
-  // Re-apply expand-all state
   if (State.expandedAll) {
     container.querySelectorAll('.improvement-plan').forEach(p => p.classList.add('visible'));
     container.querySelectorAll('.btn-view-plan').forEach(b => b.classList.add('open'));
@@ -666,23 +582,18 @@ function buildRecCard(rec, idx, isCompleted) {
       ${buildPlanHTML(rec, isCompleted)}
     </div>`;
 
-  // Toggle plan
   card.querySelector('.btn-view-plan').addEventListener('click', () => togglePlan(rec.id));
-
   return card;
 }
 
 function buildPlanHTML(rec, isCompleted) {
   const { plan, id } = rec;
-
   const section = (title, items) => {
     if (!items || !items.length) return '';
     return `
       <div class="plan-section">
         <div class="plan-section-title">${title}</div>
-        <ul class="plan-list">
-          ${items.map(i => `<li>${i}</li>`).join('')}
-        </ul>
+        <ul class="plan-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>
       </div>`;
   };
 
@@ -710,7 +621,6 @@ function buildPlanHTML(rec, isCompleted) {
     </div>`;
 }
 
-/* ── Toggle improvement plan ────────────────────────────────── */
 function togglePlan(id) {
   const plan = document.getElementById(`plan-${id}`);
   const btn  = document.querySelector(`.btn-view-plan[data-id="${id}"]`);
@@ -721,18 +631,13 @@ function togglePlan(id) {
   btn.classList.toggle('open', !isOpen);
 
   if (!isOpen) {
-    // Attach mark-as-done listener when plan opens
     const markBtn = plan.querySelector('.btn-mark-done');
-    if (markBtn) {
-      markBtn.addEventListener('click', () => markPlanDone(id, markBtn));
-    }
+    if (markBtn) markBtn.addEventListener('click', () => markPlanDone(id, markBtn));
   }
 }
 
-/* ── Mark plan as done ──────────────────────────────────────── */
 function markPlanDone(id, btn) {
   if (State.completedPlans.has(id)) {
-    // Undo
     State.completedPlans.delete(id);
     btn.style.background = 'rgba(0,245,255,0.08)';
     btn.style.borderColor = 'rgba(0,245,255,0.25)';
@@ -750,20 +655,16 @@ function markPlanDone(id, btn) {
   safeSet('interviewai_completed_plans', [...State.completedPlans]);
   renderStats();
 
-  // Update card title
   const card = document.querySelector(`.rec-card[data-id="${id}"]`);
   if (card) {
     const title = card.querySelector('.rec-card-title');
     const rec   = State.recommendations.find(r => r.id === id);
-    if (title && rec) {
-      title.textContent = (State.completedPlans.has(id) ? '✅ ' : '') + rec.title;
-    }
+    if (title && rec) title.textContent = (State.completedPlans.has(id) ? '✅ ' : '') + rec.title;
   }
 }
 
-/* ── Render skill progress ──────────────────────────────────── */
 function renderSkillProgress() {
-  const list   = DOM.progressList();
+  const list = DOM.progressList();
   if (!list) return;
   const skills = computeSkillProgress();
 
@@ -776,16 +677,13 @@ function renderSkillProgress() {
     <div class="progress-item">
       <div class="progress-row">
         <span class="progress-label">${s.label}</span>
-        <span class="progress-pct" style="color:${s.pct >= 70 ? 'var(--green)' : s.pct >= 40 ? 'var(--yellow)' : 'var(--pink)'}">
-          ${s.pct}%
-        </span>
+        <span class="progress-pct" style="color:${s.pct >= 70 ? 'var(--green)' : s.pct >= 40 ? 'var(--yellow)' : 'var(--pink)'}">${s.pct}%</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" style="width:0%;background:${s.color}" data-target="${s.pct}"></div>
       </div>
     </div>`).join('');
 
-  // Animate bars after render
   requestAnimationFrame(() => {
     list.querySelectorAll('.progress-fill').forEach(bar => {
       const target = bar.dataset.target;
@@ -794,7 +692,6 @@ function renderSkillProgress() {
   });
 }
 
-/* ── Expand / collapse all plans ────────────────────────────── */
 function toggleExpandAll() {
   State.expandedAll = !State.expandedAll;
   const btn = DOM.expandAllBtn();
@@ -804,9 +701,8 @@ function toggleExpandAll() {
   document.querySelectorAll('.btn-view-plan').forEach(b => b.classList.toggle('open', State.expandedAll));
 
   if (State.expandedAll) {
-    // Attach all mark-done listeners
     document.querySelectorAll('.btn-mark-done').forEach(markBtn => {
-      markBtn.replaceWith(markBtn.cloneNode(true)); // clear old listeners
+      markBtn.replaceWith(markBtn.cloneNode(true));
     });
     document.querySelectorAll('.btn-mark-done').forEach(markBtn => {
       markBtn.addEventListener('click', () => markPlanDone(markBtn.dataset.id, markBtn));
@@ -816,7 +712,6 @@ function toggleExpandAll() {
   showToast(State.expandedAll ? 'All plans expanded' : 'All plans collapsed', 'info');
 }
 
-/* ── Task badge (pending daily tasks) ───────────────────────── */
 function renderTaskBadge() {
   const tasks  = safeGet('interviewai_daily_tasks') || [];
   const pending = tasks.filter(t => !t.done).length;
@@ -826,7 +721,6 @@ function renderTaskBadge() {
   badge.style.display = pending > 0 ? 'inline-block' : 'none';
 }
 
-/* ── Sidebar mobile toggle ──────────────────────────────────── */
 function initSidebar() {
   const sidebar  = DOM.sidebar();
   const overlay  = DOM.sidebarOverlay();
@@ -847,7 +741,6 @@ function initSidebar() {
   });
 }
 
-/* ── Search ─────────────────────────────────────────────────── */
 function initSearch() {
   const input = DOM.recSearch();
   if (!input) return;
@@ -861,7 +754,6 @@ function initSearch() {
   });
 }
 
-/* ── Sort ───────────────────────────────────────────────────── */
 function initSort() {
   const sel = DOM.sortSelect();
   if (!sel) return;
@@ -871,15 +763,12 @@ function initSort() {
   });
 }
 
-/* ── Expand all button ──────────────────────────────────────── */
 function initExpandAll() {
   DOM.expandAllBtn()?.addEventListener('click', toggleExpandAll);
 }
 
-/* ── Demo history injection (for first-time users) ──────────── */
 function injectDemoHistoryIfEmpty() {
   if (State.history.length) return;
-  // Inject sample data so progress bars + smart recs fire
   const demo = [
     { confidence_score: 58, Filler_Words: 7, Speaking_Rate: 170, Technical_Correctness: 6,
       Communication_Score: 6, Sentiment_Score: 0.05, Grammar_Score: 6, Eye_Contact_Score: 5,
@@ -891,10 +780,8 @@ function injectDemoHistoryIfEmpty() {
       date: new Date(Date.now() - 86400000).toISOString() },
   ];
   State.history = demo;
-  // Note: we do NOT persist demo history — it's view-only for empty states
 }
 
-/* ── Main init ──────────────────────────────────────────────── */
 function init() {
   loadUserData();
   injectDemoHistoryIfEmpty();
@@ -913,7 +800,6 @@ function init() {
   initSort();
   initExpandAll();
 
-  // Keyboard shortcut: Escape closes sidebar on mobile
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       DOM.sidebar()?.classList.remove('mobile-open');
