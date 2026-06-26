@@ -7,508 +7,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #080b14;
-      --surface:  #0d1220;
-      --surface2: #111827;
-      --border:   rgba(255,255,255,0.07);
-      --border2:  rgba(255,255,255,0.13);
-      --cyan:     #00f5ff;
-      --purple:   #7c3aed;
-      --pink:     #f43f5e;
-      --green:    #10b981;
-      --yellow:   #f59e0b;
-      --blue:     #3b82f6;
-      --text:     #f0f4ff;
-      --text2:    #8892a4;
-      --text3:    #4a5568;
-      --grad:     linear-gradient(135deg, #00f5ff, #7c3aed);
-      --font-display: 'Syne', sans-serif;
-      --font-body:    'DM Sans', sans-serif;
-      --sidebar-w: 260px;
-      --header-h:  64px;
-      --radius:    14px;
-      --radius-sm: 8px;
-    }
-
-    html { scroll-behavior: smooth; }
-    body { font-family: var(--font-body); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-    a { color: inherit; text-decoration: none; }
-    button { cursor: pointer; font-family: var(--font-body); border: none; }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
-    /* ── Background ─────────────────────────────── */
-    .bg-mesh {
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    }
-    .bg-mesh::before {
-      content: '';
-      position: absolute;
-      width: 500px; height: 500px;
-      top: -150px; left: -100px;
-      background: radial-gradient(circle, rgba(0,245,255,0.055) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-    .bg-mesh::after {
-      content: '';
-      position: absolute;
-      width: 400px; height: 400px;
-      bottom: -100px; right: -100px;
-      background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    /* ── Sidebar ────────────────────────────────── */
-    .sidebar {
-      position: fixed; top: 0; left: 0;
-      width: var(--sidebar-w); height: 100vh;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column;
-      z-index: 200;
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    }
-    .sidebar-logo {
-      display: flex; align-items: center; gap: 12px;
-      padding: 20px 24px; border-bottom: 1px solid var(--border);
-      height: var(--header-h);
-    }
-    .logo-mark {
-      width: 32px; height: 32px; border-radius: 10px;
-      background: var(--grad); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-    .logo-name { font-family: var(--font-display); font-weight: 700; font-size: 17px; }
-    .logo-accent { color: var(--cyan); }
-    .sidebar-section-label {
-      font-size: 10px; font-weight: 600; letter-spacing: 1.4px;
-      text-transform: uppercase; color: var(--text3); padding: 20px 24px 8px;
-    }
-    .sidebar-nav { flex: 1; overflow-y: auto; padding: 8px 12px; }
-    .sidebar-nav::-webkit-scrollbar { width: 3px; }
-    .sidebar-link {
-      display: flex; align-items: center; gap: 12px; padding: 10px 12px;
-      border-radius: var(--radius-sm); color: var(--text2); font-size: 14px; font-weight: 500;
-      transition: all 0.2s; margin-bottom: 2px;
-    }
-    .sidebar-link:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-    .sidebar-link.active {
-      background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(124,58,237,0.1));
-      color: var(--cyan); border: 1px solid rgba(0,245,255,0.15);
-    }
-    .nav-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
-    .sidebar-link.active .nav-icon { opacity: 1; }
-    .sidebar-divider { height: 1px; background: var(--border); margin: 8px 12px; }
-    .logout-link { color: var(--pink); margin-top: 4px; }
-    .logout-link:hover { background: rgba(244,63,94,0.08); }
-    .sidebar-user {
-      padding: 16px; border-top: 1px solid var(--border);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .user-avatar-sm {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: linear-gradient(135deg, #00f5ff33, #7c3aed33);
-      border: 2px solid var(--border2);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 13px; flex-shrink: 0;
-    }
-    .user-name-sm { font-size: 13px; font-weight: 600; }
-    .user-role-sm { font-size: 11px; color: var(--text2); }
-
-    /* ── Main Layout ────────────────────────────── */
-    .layout { margin-left: var(--sidebar-w); min-height: 100vh; position: relative; z-index: 1; }
-
-    /* ── Top Header ─────────────────────────────── */
-    .top-header {
-      height: var(--header-h); display: flex; align-items: center; justify-content: space-between;
-      padding: 0 28px; border-bottom: 1px solid var(--border);
-      background: rgba(8,11,20,0.85); backdrop-filter: blur(20px);
-      position: sticky; top: 0; z-index: 100;
-    }
-    .header-left { display: flex; align-items: center; gap: 16px; }
-    .mobile-menu-btn {
-      display: none; width: 36px; height: 36px; border-radius: 8px;
-      background: var(--surface2); border: 1px solid var(--border);
-      align-items: center; justify-content: center; color: var(--text);
-    }
-    .breadcrumb { font-size: 13px; color: var(--text2); }
-    .breadcrumb span { color: var(--text); font-weight: 600; }
-    .header-right { display: flex; align-items: center; gap: 10px; }
-    .btn-new-analysis {
-      display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 36px;
-      border-radius: 8px; background: var(--grad); color: #000;
-      font-size: 13px; font-weight: 600; transition: all 0.2s; text-decoration: none;
-    }
-    .btn-new-analysis:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    /* ── Page Content ───────────────────────────── */
-    .page-content { padding: 28px; max-width: 1200px; }
-
-    /* ── Page Header ────────────────────────────── */
-    .page-header {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
-    }
-    .page-title {
-      font-family: var(--font-display); font-size: 28px; font-weight: 800;
-      letter-spacing: -0.5px; margin-bottom: 4px;
-    }
-    .page-sub { font-size: 14px; color: var(--text2); }
-    .grad-text {
-      background: var(--grad); -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent; background-clip: text;
-    }
-
-    /* ── Filter Bar ─────────────────────────────── */
-    .filter-bar {
-      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-    .filter-group {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: var(--radius-sm); padding: 6px 8px;
-    }
-    .filter-label { font-size: 12px; color: var(--text2); white-space: nowrap; }
-    .filter-select {
-      background: transparent; border: none; color: var(--text);
-      font-family: var(--font-body); font-size: 13px; font-weight: 500;
-      outline: none; cursor: pointer; padding: 2px 4px;
-    }
-    .filter-select option { background: var(--surface2); color: var(--text); }
-    .search-wrap {
-      flex: 1; min-width: 200px; max-width: 320px;
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: var(--radius-sm); padding: 8px 12px;
-    }
-    .search-wrap svg { color: var(--text2); flex-shrink: 0; }
-    .search-input {
-      flex: 1; background: transparent; border: none; color: var(--text);
-      font-family: var(--font-body); font-size: 13px; outline: none;
-    }
-    .search-input::placeholder { color: var(--text3); }
-    .btn-export {
-      display: flex; align-items: center; gap: 7px; padding: 8px 16px;
-      border-radius: var(--radius-sm); background: var(--surface2);
-      border: 1px solid var(--border2); color: var(--text); font-size: 13px; font-weight: 500;
-      transition: all 0.2s; white-space: nowrap;
-    }
-    .btn-export:hover { border-color: var(--cyan); color: var(--cyan); }
-
-    /* ── Summary Stats ──────────────────────────── */
-    .summary-stats {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px;
-    }
-    .summary-stat {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px 18px;
-      position: relative; overflow: hidden;
-    }
-    .summary-stat::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--accent, var(--grad));
-    }
-    .ss-label { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .ss-value { font-family: var(--font-display); font-size: 24px; font-weight: 800; }
-    .ss-change { font-size: 11px; color: var(--text2); margin-top: 4px; }
-
-    /* ── History List ───────────────────────────── */
-    .history-wrapper {
-      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
-    }
-    .history-table-head {
-      display: grid;
-      grid-template-columns: 60px 1fr 110px 110px 110px 120px 80px;
-      gap: 12px; align-items: center;
-      padding: 12px 20px; border-bottom: 1px solid var(--border2);
-      background: var(--surface2);
-    }
-    .th {
-      font-size: 11px; font-weight: 600; color: var(--text2);
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .th.sortable { cursor: pointer; user-select: none; display: flex; align-items: center; gap: 4px; }
-    .th.sortable:hover { color: var(--cyan); }
-    .th.active-sort { color: var(--cyan); }
-
-    .history-rows { display: flex; flex-direction: column; }
-
-    .history-row {
-      display: grid;
-      grid-template-columns: 60px 1fr 110px 110px 110px 120px 80px;
-      gap: 12px; align-items: center;
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-      cursor: pointer;
-      position: relative;
-    }
-    .history-row:last-child { border-bottom: none; }
-    .history-row:hover { background: rgba(255,255,255,0.025); }
-    .history-row.expanded { background: rgba(0,245,255,0.025); border-color: rgba(0,245,255,0.1); }
-
-    /* ── Row cells ──────────────────────────────── */
-    .row-num { font-size: 13px; color: var(--text3); font-weight: 600; }
-
-    .row-info { 
-        display:flex;
-        flex-direction: column;
-    }
-    .row-role { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-    .row-date { font-size: 11px; color: var(--text2); }
-
-    .conf-cell { display: flex; align-items: center; gap: 8px; }
-    .conf-ring {
-      width: 34px; height: 34px;
-    }
-    .conf-ring-val { font-size: 13px; font-weight: 700; }
-
-    .stress-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
-    }
-    .stress-low    { background: rgba(16,185,129,0.12); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
-    .stress-medium { background: rgba(245,158,11,0.12); color: var(--yellow); border: 1px solid rgba(245,158,11,0.25); }
-    .stress-high   { background: rgba(244,63,94,0.12);  color: var(--pink);  border: 1px solid rgba(244,63,94,0.25);  }
-
-    .result-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
-      letter-spacing: 0.3px;
-    }
-    .result-selected { background: rgba(16,185,129,0.12); color: var(--green);  border: 1px solid rgba(16,185,129,0.25); }
-    .result-not      { background: rgba(244,63,94,0.12);  color: var(--pink);   border: 1px solid rgba(244,63,94,0.25); }
-
-    .difficulty-cell {
-      font-size: 12px; font-weight: 600;
-      padding: 3px 10px; border-radius: 20px; display: inline-block;
-    }
-    .diff-easy   { background: rgba(16,185,129,0.1);  color: var(--green); }
-    .diff-medium { background: rgba(245,158,11,0.1);  color: var(--yellow); }
-    .diff-hard   { background: rgba(244,63,94,0.1);   color: var(--pink); }
-
-    .row-actions { display: flex; align-items: center; gap: 6px; }
-    .icon-btn {
-      width: 30px; height: 30px; border-radius: 7px;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text2); display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-    }
-    .icon-btn:hover { border-color: var(--border2); color: var(--text); }
-    .icon-btn.danger:hover { border-color: rgba(244,63,94,0.4); color: var(--pink); background: rgba(244,63,94,0.06); }
-
-    /* ── Expanded Row Detail ────────────────────── */
-    .row-detail {
-      display: none; padding: 0 20px 20px; border-bottom: 1px solid var(--border);
-      background: rgba(0,245,255,0.02);
-    }
-    .row-detail.open { display: block; }
-
-    .detail-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;
-    }
-
-    .detail-section {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 14px;
-    }
-    .detail-section-title {
-      font-size: 11px; font-weight: 600; color: var(--text2);
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
-    }
-    .detail-metric { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .detail-metric:last-child { margin-bottom: 0; }
-    .dm-label { font-size: 12px; color: var(--text2); }
-    .dm-value { font-size: 13px; font-weight: 600; }
-
-    .transcript-box {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 14px;
-      grid-column: 1 / -1;
-    }
-    .transcript-title { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .transcript-text { font-size: 13px; color: var(--text); line-height: 1.7; }
-
-    .detail-actions {
-      display: flex; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 4px;
-    }
-    .btn-detail-action {
-      display: flex; align-items: center; gap: 7px; padding: 8px 16px;
-      border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;
-      transition: all 0.2s;
-    }
-    .btn-detail-primary {
-      background: var(--grad); color: #000; font-weight: 600;
-    }
-    .btn-detail-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-detail-secondary {
-      background: var(--surface2); border: 1px solid var(--border2); color: var(--text);
-    }
-    .btn-detail-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
-
-    /* ── Empty state ────────────────────────────── */
-    .empty-state {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 80px 20px; gap: 16px; text-align: center;
-    }
-    .empty-icon { font-size: 48px; opacity: 0.5; }
-    .empty-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--text2); }
-    .empty-sub { font-size: 14px; color: var(--text3); }
-    .btn-start {
-      display: flex; align-items: center; gap: 8px; padding: 12px 24px;
-      border-radius: var(--radius-sm); background: var(--grad); color: #000;
-      font-size: 14px; font-weight: 600; margin-top: 8px; transition: all 0.2s;
-    }
-    .btn-start:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    /* ── Pagination ─────────────────────────────── */
-    .pagination {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px; border-top: 1px solid var(--border);
-    }
-    .pagination-info { font-size: 13px; color: var(--text2); }
-    .pagination-btns { display: flex; gap: 6px; }
-    .pg-btn {
-      width: 34px; height: 34px; border-radius: 8px;
-      background: var(--surface2); border: 1px solid var(--border);
-      color: var(--text2); display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 600; transition: all 0.2s;
-    }
-    .pg-btn:hover { border-color: var(--border2); color: var(--text); }
-    .pg-btn.active { background: var(--grad); border-color: transparent; color: #000; font-weight: 700; }
-    .pg-btn:disabled { opacity: 0.35; pointer-events: none; }
-
-    /* ── Progress Chart ─────────────────────────── */
-    .progress-section {
-      margin-top: 24px; background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-    }
-    .ps-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 20px; border-bottom: 1px solid var(--border);
-    }
-    .ps-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; }
-    .ps-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
-    .ps-body { padding: 20px; }
-    .line-chart { height: 120px; position: relative; }
-    .lc-labels {
-      display: flex; justify-content: space-between;
-      padding-top: 8px; font-size: 10px; color: var(--text3);
-    }
-
-    /* ── Sidebar Overlay (mobile) ───────────────── */
-    .sidebar-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6); z-index: 190;
-      backdrop-filter: blur(4px);
-    }
-
-    /* ── Toast ──────────────────────────────────── */
-    .toast-hist {
-      position: fixed; bottom: 24px; right: 24px;
-      display: flex; align-items: center; gap: 10px; padding: 12px 20px;
-      border-radius: 10px; background: var(--surface); border: 1px solid var(--border2);
-      font-size: 13px; font-weight: 500; color: var(--text);
-      box-shadow: 0 12px 48px rgba(0,0,0,0.6);
-      transform: translateY(80px); opacity: 0;
-      transition: all 0.35s cubic-bezier(0.34,1.4,0.64,1);
-      z-index: 9999; pointer-events: none;
-    }
-    .toast-hist.show { transform: translateY(0); opacity: 1; }
-
-    /* ── Delete Modal ───────────────────────────── */
-    .delete-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px); z-index: 8000;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.2s;
-    }
-    .delete-overlay.open { opacity: 1; pointer-events: all; }
-    .delete-modal {
-      background: var(--surface); border: 1px solid rgba(244,63,94,0.3);
-      border-radius: 20px; padding: 36px; text-align: center; max-width: 360px; width: 100%;
-      transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.34,1.4,0.64,1);
-    }
-    .delete-overlay.open .delete-modal { transform: scale(1); }
-    .delete-icon { font-size: 40px; margin-bottom: 12px; }
-    .delete-title { font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    .delete-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
-    .delete-actions { display: flex; gap: 10px; }
-    .btn-cancel {
-      flex: 1; padding: 11px; border-radius: 10px;
-      background: var(--surface2); border: 1px solid var(--border2);
-      color: var(--text); font-size: 14px; font-weight: 600;
-    }
-    .btn-cancel:hover { background: rgba(255,255,255,0.06); }
-    .btn-delete-confirm {
-      flex: 1; padding: 11px; border-radius: 10px;
-      background: var(--pink); border: none; color: #fff;
-      font-size: 14px; font-weight: 700; font-family: var(--font-body);
-    }
-    .btn-delete-confirm:hover { opacity: 0.85; }
-
-    /* ── Responsive ─────────────────────────────── */
-    @media (max-width: 1100px) {
-      .summary-stats { grid-template-columns: repeat(2, 1fr); }
-      .history-table-head,
-      .history-row { grid-template-columns: 50px 1fr 100px 100px 90px 90px 70px; }
-    }
-    @media (max-width: 900px) {
-      .history-table-head,
-      .history-row { grid-template-columns: 40px 1fr 90px 90px 80px; }
-      .history-table-head .th:nth-child(4),
-      .history-table-head .th:nth-child(5),
-      .history-row > *:nth-child(4),
-      .history-row > *:nth-child(5) { display: none; }
-    }
-    @media (max-width: 800px) {
-      :root { --sidebar-w: 0px; }
-      .sidebar { transform: translateX(-260px); width: 260px; }
-      .sidebar.mobile-open { transform: translateX(0); width: 260px; }
-      .sidebar-overlay { display: block; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-      .sidebar-overlay.open { opacity: 1; pointer-events: all; }
-      .mobile-menu-btn { display: flex; }
-      .layout { margin-left: 0; }
-      .page-content { padding: 16px; }
-      .summary-stats { grid-template-columns: 1fr 1fr; }
-      .detail-grid { grid-template-columns: 1fr; }
-      .history-table-head { display: none; }
-      .history-row { grid-template-columns: 1fr; padding: 14px 16px; }
-      .history-row > * { display: none; }
-      .history-row .row-info,
-      .history-row .row-result,
-      .history-row .row-actions { display: flex; }
-      .row-info { display: block; }
-    }
-    @media (max-width: 480px) {
-      .summary-stats { grid-template-columns: 1fr 1fr; }
-      .filter-bar { flex-direction: column; align-items: stretch; }
-      .search-wrap { max-width: 100%; }
-    }
-
-    /* ── Animations ─────────────────────────────── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    .summary-stat { animation: fadeUp 0.4s ease both; }
-    .summary-stat:nth-child(1) { animation-delay: 0.05s; }
-    .summary-stat:nth-child(2) { animation-delay: 0.10s; }
-    .summary-stat:nth-child(3) { animation-delay: 0.15s; }
-    .summary-stat:nth-child(4) { animation-delay: 0.20s; }
-    .history-wrapper { animation: fadeUp 0.5s ease 0.1s both; }
-  </style>
+  <link rel="stylesheet" href="css/history.css" />
 </head>
 <body>
 
-  <div class="bg-mesh"></div>
+  <!-- Background -->
+  <div class="bg-mesh">
+    <div class="bg-mesh-orb bg-mesh-orb-1"></div>
+    <div class="bg-mesh-orb bg-mesh-orb-2"></div>
+    <div class="bg-mesh-orb bg-mesh-orb-3"></div>
+  </div>
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- SIDEBAR -->
+  <!-- ── SIDEBAR ── -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div class="logo-mark">
@@ -518,8 +29,10 @@
       </div>
       <span class="logo-name">Interview<span class="logo-accent">AI</span></span>
     </div>
+
     <nav class="sidebar-nav">
       <div class="sidebar-section-label">Main</div>
+
       <a href="dashboard.html" class="sidebar-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Dashboard
@@ -527,6 +40,11 @@
       <a href="index.html" class="sidebar-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
         Analyze Interview
+      </a>
+      <a href="speaking_practice.html" class="sidebar-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Speaking Practice
+        <span class="nav-badge">NEW</span>
       </a>
       <a href="history.html" class="sidebar-link active">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -544,8 +62,10 @@
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
         Leaderboard
       </a>
+
       <div class="sidebar-divider"></div>
       <div class="sidebar-section-label">Account</div>
+
       <a href="profile.html" class="sidebar-link">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         Profile
@@ -555,6 +75,7 @@
         Logout
       </a>
     </nav>
+
     <div class="sidebar-user">
       <div class="user-avatar-sm" id="avatarSm">?</div>
       <div>
@@ -564,8 +85,10 @@
     </div>
   </aside>
 
-  <!-- MAIN LAYOUT -->
+  <!-- ── MAIN LAYOUT ── -->
   <div class="layout">
+
+    <!-- Top Header -->
     <header class="top-header">
       <div class="header-left">
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
@@ -583,7 +106,9 @@
       </div>
     </header>
 
+    <!-- Page Content -->
     <main class="page-content">
+
       <!-- Page Header -->
       <div class="page-header">
         <div>
@@ -594,22 +119,26 @@
 
       <!-- Summary Stats -->
       <div class="summary-stats">
-        <div class="summary-stat" style="--accent:linear-gradient(90deg,#00f5ff,#7c3aed)">
+        <div class="summary-stat" style="--accent: linear-gradient(90deg,#ff5a28,#ffb400)">
+          <div class="ss-icon" style="background:rgba(255,90,40,0.12);border:1px solid rgba(255,90,40,0.22)">📋</div>
           <div class="ss-label">Total Sessions</div>
           <div class="ss-value grad-text" id="statTotal">0</div>
           <div class="ss-change">All time interviews</div>
         </div>
-        <div class="summary-stat" style="--accent:linear-gradient(90deg,#f59e0b,#f43f5e)">
+        <div class="summary-stat" style="--accent: linear-gradient(90deg,#ffb400,#f43f5e)">
+          <div class="ss-icon" style="background:rgba(255,180,0,0.10);border:1px solid rgba(255,180,0,0.22)">🏆</div>
           <div class="ss-label">Best Confidence</div>
-          <div class="ss-value" style="color:var(--yellow)" id="statBestConf">—</div>
+          <div class="ss-value" style="color:var(--gold)" id="statBestConf">—</div>
           <div class="ss-change">Personal record</div>
         </div>
-        <div class="summary-stat" style="--accent:linear-gradient(90deg,#10b981,#3b82f6)">
+        <div class="summary-stat" style="--accent: linear-gradient(90deg,#22c55e,#3b82f6)">
+          <div class="ss-icon" style="background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.22)">✅</div>
           <div class="ss-label">Selection Rate</div>
           <div class="ss-value" style="color:var(--green)" id="statSelRate">—</div>
           <div class="ss-change">Interviews selected</div>
         </div>
-        <div class="summary-stat" style="--accent:linear-gradient(90deg,#8b5cf6,#00f5ff)">
+        <div class="summary-stat" style="--accent: linear-gradient(90deg,#a855f7,#ff5a28)">
+          <div class="ss-icon" style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.22)">📊</div>
           <div class="ss-label">Avg Confidence</div>
           <div class="ss-value" style="color:var(--purple)" id="statAvgConf">—</div>
           <div class="ss-change">All sessions average</div>
@@ -620,10 +149,10 @@
       <div class="filter-bar">
         <div class="search-wrap">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input class="search-input" type="text" id="searchInput" placeholder="Search by role, result…" />
+          <input class="search-input" type="text" id="searchInput" placeholder="Search by role or result…" />
         </div>
         <div class="filter-group">
-          <span class="filter-label">Result:</span>
+          <span class="filter-label">Result</span>
           <select class="filter-select" id="filterResult">
             <option value="all">All</option>
             <option value="selected">Selected</option>
@@ -631,7 +160,7 @@
           </select>
         </div>
         <div class="filter-group">
-          <span class="filter-label">Stress:</span>
+          <span class="filter-label">Stress</span>
           <select class="filter-select" id="filterStress">
             <option value="all">All</option>
             <option value="Low">Low</option>
@@ -640,7 +169,16 @@
           </select>
         </div>
         <div class="filter-group">
-          <span class="filter-label">Sort:</span>
+          <span class="filter-label">Difficulty</span>
+          <select class="filter-select" id="filterDiff">
+            <option value="all">All</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Sort</span>
           <select class="filter-select" id="sortBy">
             <option value="date_desc">Newest First</option>
             <option value="date_asc">Oldest First</option>
@@ -658,13 +196,20 @@
       <div class="history-wrapper">
         <div class="history-table-head">
           <div class="th">#</div>
-          <div class="th sortable" data-sort="role">Role <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-          <div class="th sortable active-sort" data-sort="confidence">Confidence <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+          <div class="th sortable" data-sort="role">
+            Role
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="th sortable active-sort" data-sort="confidence">
+            Confidence
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
           <div class="th">Stress</div>
           <div class="th">Difficulty</div>
           <div class="th">Result</div>
           <div class="th">Actions</div>
         </div>
+
         <div class="history-rows" id="historyRows">
           <!-- Injected by JS -->
         </div>
@@ -679,14 +224,24 @@
       <!-- Progress Chart -->
       <div class="progress-section">
         <div class="ps-header">
-          <div>
+          <div class="ps-title-group">
             <div class="ps-title">Confidence Progress Over Time</div>
-            <div class="ps-sub">Your improvement trend across sessions</div>
+            <div class="ps-sub">Your improvement trend across all sessions</div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#ff5a28"></div>
+              Confidence
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:#22c55e"></div>
+              Selected
+            </div>
           </div>
         </div>
         <div class="ps-body">
-          <div class="line-chart" id="lineChart">
-            <svg id="progressSvg" width="100%" height="120" style="display:block;"></svg>
+          <div class="line-chart">
+            <svg id="progressSvg" width="100%" height="130" style="display:block;"></svg>
           </div>
           <div class="lc-labels" id="lcLabels"></div>
         </div>
@@ -709,7 +264,10 @@
   </div>
 
   <!-- Toast -->
-  <div class="toast-hist" id="toastHist"></div>
+  <div class="toast-hist" id="toastHist">
+    <span class="toast-icon-el" id="toastIcon">✅</span>
+    <span id="toastMsg">Done</span>
+  </div>
 
   <script src="js/history.js"></script>
 </body>

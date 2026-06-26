@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>InterviewAI — AI-Powered Interview Coaching Platform</title>
+  <title>InterviewAI — Analyze Interviews. Practice Speaking. Get Hired.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -23,7 +23,6 @@
   <nav class="navbar" id="navbar">
     <div class="nav-inner">
 
-      <!-- Logo -->
       <a href="index.html" class="nav-logo">
         <div class="nav-logo-mark">
           <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
@@ -33,15 +32,14 @@
         <span class="nav-logo-text">Interview<span class="nav-accent">AI</span></span>
       </a>
 
-      <!-- Desktop Links -->
       <div class="nav-links" id="navLinks">
-        <a href="#features"            class="nav-link">Features</a>
+        <a href="#analyzer"            class="nav-link">Interview Analyzer</a>
+        <a href="#tutor"               class="nav-link">Speaking Tutor</a>
         <a href="#how-it-works"        class="nav-link">How It Works</a>
         <a href="#leaderboard-section" class="nav-link">Leaderboard</a>
         <a href="#pricing"             class="nav-link">Pricing</a>
       </div>
 
-      <!-- Right: auth state injected by landing.js -->
       <div class="nav-right" id="navRight">
         <a href="auth.html?mode=login" class="btn-nav-signup">Login / Sign Up</a>
         <button class="nav-menu-btn" id="navMenuBtn" aria-label="Open menu">
@@ -50,10 +48,10 @@
       </div>
     </div>
 
-    <!-- Mobile Drawer -->
     <div class="nav-drawer" id="navDrawer" aria-hidden="true">
       <div class="nav-drawer-inner">
-        <a href="#features"            class="drawer-link">✨ &nbsp;Features</a>
+        <a href="#analyzer"            class="drawer-link">🎯 &nbsp;Interview Analyzer</a>
+        <a href="#tutor"               class="drawer-link">🎤 &nbsp;Speaking Tutor</a>
         <a href="#how-it-works"        class="drawer-link">⚙️ &nbsp;How It Works</a>
         <a href="#leaderboard-section" class="drawer-link">🏆 &nbsp;Leaderboard</a>
         <a href="#pricing"             class="drawer-link">💎 &nbsp;Pricing</a>
@@ -63,45 +61,69 @@
     </div>
   </nav>
 
-  <!-- Backdrop -->
   <div class="nav-backdrop" id="navBackdrop"></div>
 
   <!-- ══════════════════════════════════════════
-       HERO
+       HERO — Two Pillars
   ══════════════════════════════════════════ -->
   <section class="hero" id="hero">
     <div class="hero-badge">
       <span class="badge-pulse"></span>
-      Powered by Whisper · librosa · TextBlob · ML
+      Two tools. One outcome — your next offer.
     </div>
 
     <h1 class="hero-title">
-      <span class="hero-title-line">AI-Powered</span>
-      <span class="hero-title-grad">Interview Evaluation</span>
-      <span class="hero-title-line">Platform</span>
+      <span class="hero-title-line">Get Evaluated.</span>
+      <span class="hero-title-grad">Get Fluent.</span>
+      <span class="hero-title-line">Get Hired.</span>
     </h1>
 
     <p class="hero-sub">
-      Analyze confidence, speech, communication, and technical skills using AI.
-      Get instant feedback and personalized improvement plans.
+      InterviewAI pairs an ML-powered interview evaluator with a live AI speaking tutor —
+      so you find out exactly where you stand, then put in the reps to fix it.
     </p>
 
-    <div class="hero-actions">
-      <button class="btn-hero-primary" id="analyzeBtn">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          <line x1="12" y1="19" x2="12" y2="23"/>
-        </svg>
-        Analyze Your Interview Skills
-        <div class="btn-hero-glow"></div>
-      </button>
-      <a href="#how-it-works" class="btn-hero-secondary">
-        Learn More
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </a>
+    <!-- ── Twin pillar cards ── -->
+    <div class="pillar-row">
+
+      <div class="pillar-card pillar-analyzer">
+        <div class="pillar-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+          </svg>
+        </div>
+        <div class="pillar-eyebrow">Pillar One</div>
+        <h2 class="pillar-title">Interview Analyzer</h2>
+        <p class="pillar-desc">Record one answer. Whisper transcribes it, ML models score your confidence, stress, and technical depth, and you get a verdict in under 60 seconds.</p>
+        <div class="pillar-stat"><span class="pillar-stat-num">97%</span><span class="pillar-stat-label">prediction accuracy</span></div>
+        <button class="btn-pillar" id="analyzeBtn">
+          Analyze My Interview
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="pillar-divider">
+        <span>+</span>
+      </div>
+
+      <div class="pillar-card pillar-tutor">
+        <div class="pillar-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div class="pillar-eyebrow">Pillar Two</div>
+        <h2 class="pillar-title">AI Speaking Tutor</h2>
+        <p class="pillar-desc">Talk it out with Nova, your AI tutor. Free conversation, mock interviews, or debate practice — she listens, replies, and corrects your grammar and fluency live.</p>
+        <div class="pillar-stat"><span class="pillar-stat-num">5</span><span class="pillar-stat-label">practice modes, talk anytime</span></div>
+        <button class="btn-pillar" id="speakingPracticeBtn">
+          Start Speaking Practice
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
     </div>
 
     <div class="hero-stats">
@@ -111,8 +133,8 @@
       </div>
       <div class="hero-stat-divider"></div>
       <div class="hero-stat">
-        <span class="hero-stat-val">6</span>
-        <span class="hero-stat-label">AI Models</span>
+        <span class="hero-stat-val">9</span>
+        <span class="hero-stat-label">AI-Powered Modules</span>
       </div>
       <div class="hero-stat-divider"></div>
       <div class="hero-stat">
@@ -125,55 +147,56 @@
         <span class="hero-stat-label">Feedback</span>
       </div>
     </div>
+  </section>
 
-    <div class="hero-preview">
-      <div class="preview-card preview-card-1 glass-card">
-        <div class="preview-icon">🎤</div>
-        <div class="preview-info">
-          <div class="preview-label">Speech Analysis</div>
-          <div class="preview-val">112 wpm · Pitch: 148Hz</div>
-        </div>
-        <div class="preview-badge preview-badge-good">Good</div>
-      </div>
-      <div class="preview-card preview-card-2 glass-card">
-        <div class="preview-icon">💡</div>
-        <div class="preview-info">
-          <div class="preview-label">Confidence Score</div>
-          <div class="preview-val preview-val-grad">87.4%</div>
-        </div>
-        <div class="conf-mini-ring">
-          <svg viewBox="0 0 40 40">
-            <circle cx="20" cy="20" r="15" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-            <circle cx="20" cy="20" r="15" fill="none" stroke="url(#confG)" stroke-width="3"
-              stroke-dasharray="94.2" stroke-dashoffset="12" stroke-linecap="round"
-              transform="rotate(-90 20 20)"/>
-            <defs>
-              <linearGradient id="confG" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#00e5ff"/>
-                <stop offset="100%" stop-color="#7c3aed"/>
-              </linearGradient>
-            </defs>
-          </svg>
+  <!-- ══════════════════════════════════════════
+       SIGNATURE SPLIT VISUAL
+       Left: analysis readout · Right: live conversation readout
+  ══════════════════════════════════════════ -->
+  <section class="split-demo">
+    <div class="split-demo-inner">
+
+      <div class="split-panel split-panel-analyzer">
+        <div class="split-panel-label"><span class="split-dot dot-orange"></span>Analyzer Output</div>
+        <div class="demo-readout">
+          <div class="demo-row">
+            <span class="demo-row-label">🎤 Speech Analysis</span>
+            <span class="demo-row-val">112 wpm · Pitch 148Hz</span>
+          </div>
+          <div class="demo-row">
+            <span class="demo-row-label">💡 Confidence Score</span>
+            <span class="demo-row-val demo-grad">87.4%</span>
+          </div>
+          <div class="demo-row">
+            <span class="demo-row-label">🏆 Verdict</span>
+            <span class="demo-row-val" style="color:var(--green)">Selected ✓</span>
+          </div>
         </div>
       </div>
-      <div class="preview-card preview-card-3 glass-card">
-        <div class="preview-icon">🏆</div>
-        <div class="preview-info">
-          <div class="preview-label">Interview Result</div>
-          <div class="preview-val" style="color:var(--green)">Selected ✓</div>
+
+      <div class="split-panel split-panel-tutor">
+        <div class="split-panel-label"><span class="split-dot dot-gold"></span>Tutor Conversation</div>
+        <div class="demo-chat">
+          <div class="demo-bubble demo-bubble-tutor">"Tell me about a time you handled conflict at work."</div>
+          <div class="demo-bubble demo-bubble-user">"So, um, there was this one time where me and my manager—"</div>
+          <div class="demo-bubble demo-bubble-tutor demo-bubble-correction">
+            <span class="demo-correction-tag">Live correction</span>
+            Try: <em>"My manager and I disagreed on..."</em> — and drop the filler "um" by pausing instead.
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       FEATURES CAROUSEL
+       FEATURE CAROUSEL
   ══════════════════════════════════════════ -->
   <section class="features-section" id="features">
     <div class="section-header scroll-hidden">
       <div class="section-tag">Features</div>
       <h2 class="section-title">Everything You Need to <span class="grad-text">Ace Interviews</span></h2>
-      <p class="section-sub">8 AI-powered modules working together to transform your interview performance</p>
+      <p class="section-sub">9 AI-powered modules working together to transform your interview performance</p>
     </div>
 
     <div class="carousel-wrapper">
@@ -186,6 +209,15 @@
           <h3 class="slide-title">AI Speech Analysis</h3>
           <p class="slide-desc">Real-time transcription with Whisper. Measures speaking rate, pitch, pauses, and filler words automatically.</p>
           <div class="slide-tags"><span class="slide-tag">Whisper AI</span><span class="slide-tag">librosa</span></div>
+        </div>
+
+        <div class="feature-slide glass-card feature-slide-tutor">
+          <div class="slide-icon-wrap" style="--ic:#ffb400">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3 class="slide-title">AI Speaking Tutor</h3>
+          <p class="slide-desc">Have real spoken conversations with Nova. She listens, replies, and corrects grammar, vocabulary, and fluency live — any topic, any time.</p>
+          <div class="slide-tags"><span class="slide-tag">Live Conversation</span><span class="slide-tag">Voice + Text</span></div>
         </div>
 
         <div class="feature-slide glass-card">
@@ -253,6 +285,7 @@
 
         <!-- Duplicates for seamless infinite scroll -->
         <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#00e5ff"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><h3 class="slide-title">AI Speech Analysis</h3><p class="slide-desc">Real-time transcription with Whisper. Measures speaking rate, pitch, pauses, and filler words automatically.</p><div class="slide-tags"><span class="slide-tag">Whisper AI</span><span class="slide-tag">librosa</span></div></div>
+        <div class="feature-slide glass-card feature-slide-tutor" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#ffb400"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3 class="slide-title">AI Speaking Tutor</h3><p class="slide-desc">Have real spoken conversations with Nova, live grammar and fluency correction included.</p><div class="slide-tags"><span class="slide-tag">Live Conversation</span></div></div>
         <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#f59e0b"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/></svg></div><h3 class="slide-title">Confidence Detection</h3><p class="slide-desc">ML model analyzes 13 speech and behavioral features to compute a precise confidence score from 0–100.</p><div class="slide-tags"><span class="slide-tag">ML Model</span><span class="slide-tag">13 Features</span></div></div>
         <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#f43f5e"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3 class="slide-title">Stress Detection</h3><p class="slide-desc">Identifies stress patterns from vocal biomarkers.</p><div class="slide-tags"><span class="slide-tag">Vocal Biomarkers</span></div></div>
         <div class="feature-slide glass-card" aria-hidden="true"><div class="slide-icon-wrap" style="--ic:#7c3aed"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><h3 class="slide-title">Technical Evaluation</h3><p class="slide-desc">Scores technical correctness and grammar quality for 6 role types.</p><div class="slide-tags"><span class="slide-tag">6 Role Types</span></div></div>
@@ -268,18 +301,24 @@
         <button class="cdot" data-idx="5"></button>
         <button class="cdot" data-idx="6"></button>
         <button class="cdot" data-idx="7"></button>
+        <button class="cdot" data-idx="8"></button>
       </div>
     </div>
   </section>
 
   <!-- ══════════════════════════════════════════
-       HOW IT WORKS
+       HOW IT WORKS — two parallel flows
   ══════════════════════════════════════════ -->
   <section class="hiw-section" id="how-it-works">
     <div class="section-header scroll-hidden">
       <div class="section-tag">Process</div>
       <h2 class="section-title">How It <span class="grad-text">Works</span></h2>
-      <p class="section-sub">From recording to results in under 60 seconds</p>
+      <p class="section-sub">Two paths, same destination: a stronger interview performance</p>
+    </div>
+
+    <!-- Analyzer flow -->
+    <div class="hiw-track-label" id="analyzer">
+      <span class="hiw-track-dot dot-orange"></span> Interview Analyzer — from recording to results in under 60 seconds
     </div>
     <div class="hiw-steps">
       <div class="hiw-step scroll-hidden">
@@ -308,6 +347,33 @@
         <div class="hiw-icon">🚀</div>
         <h3 class="hiw-title">Get Your Plan</h3>
         <p class="hiw-desc">Receive a personalized plan with daily tasks, technique guides, and targeted exercises to maximize performance.</p>
+      </div>
+    </div>
+
+    <!-- Tutor flow -->
+    <div class="hiw-track-label hiw-track-label-gold" id="tutor">
+      <span class="hiw-track-dot dot-gold"></span> AI Speaking Tutor — go from script to fluent in three steps
+    </div>
+    <div class="hiw-steps hiw-steps-3">
+      <div class="hiw-step hiw-step-gold scroll-hidden">
+        <div class="hiw-num hiw-num-gold">01</div>
+        <div class="hiw-icon">🗂️</div>
+        <h3 class="hiw-title">Pick a Mode</h3>
+        <p class="hiw-desc">Free conversation, job interview, storytelling, debate, or pronunciation drills — choose what you want to work on.</p>
+        <div class="hiw-connector hiw-connector-gold"></div>
+      </div>
+      <div class="hiw-step hiw-step-gold scroll-hidden">
+        <div class="hiw-num hiw-num-gold">02</div>
+        <div class="hiw-icon">🗣️</div>
+        <h3 class="hiw-title">Talk to Nova</h3>
+        <p class="hiw-desc">Speak or type — Nova replies in real time and keeps the conversation going naturally, just like a real practice partner.</p>
+        <div class="hiw-connector hiw-connector-gold"></div>
+      </div>
+      <div class="hiw-step hiw-step-gold scroll-hidden">
+        <div class="hiw-num hiw-num-gold">03</div>
+        <div class="hiw-icon">✅</div>
+        <h3 class="hiw-title">Fix It Live</h3>
+        <p class="hiw-desc">Get instant grammar, vocabulary, and fluency scores after every turn, with corrections you can apply on your very next sentence.</p>
       </div>
     </div>
   </section>
@@ -362,6 +428,7 @@
           <li><span class="pf-check">✓</span> 20 interviews / month</li>
           <li><span class="pf-check">✓</span> Speech analysis</li>
           <li><span class="pf-check">✓</span> Confidence scoring</li>
+          <li><span class="pf-check">✓</span> 15 min / day AI Speaking Tutor</li>
           <li><span class="pf-check">✓</span> Basic recommendations</li>
           <li><span class="pf-check">✓</span> Daily tasks</li>
           <li><span class="pf-check">✓</span> Leaderboard access</li>
@@ -378,11 +445,12 @@
           <li><span class="pf-check">✓</span> Unlimited interviews</li>
           <li><span class="pf-check">✓</span> Full speech analysis</li>
           <li><span class="pf-check">✓</span> All 3 ML predictions</li>
+          <li><span class="pf-check">✓</span> Unlimited AI Speaking Tutor</li>
+          <li><span class="pf-check">✓</span> All 5 tutor practice modes</li>
           <li><span class="pf-check">✓</span> AI improvement plans</li>
           <li><span class="pf-check">✓</span> Daily tasks &amp; XP</li>
           <li><span class="pf-check">✓</span> Leaderboard access</li>
           <li><span class="pf-check">✓</span> Online interview via video</li>
-          <li><span class="pf-check">✓</span> Live speech analyzer</li>
         </ul>
         <a href="auth.html?mode=signup" class="btn-pricing-primary">Start Pro Free Trial</a>
       </div>
@@ -395,6 +463,7 @@
           <li><span class="pf-check">✓</span> Everything in Pro</li>
           <li><span class="pf-check">✓</span> Team analytics</li>
           <li><span class="pf-check">✓</span> Custom role types</li>
+          <li><span class="pf-check">✓</span> Custom tutor scenarios</li>
           <li><span class="pf-check">✓</span> API access</li>
           <li><span class="pf-check">✓</span> Priority support</li>
           <li><span class="pf-check">✓</span> White-label option</li>
@@ -412,7 +481,7 @@
     <div class="cta-inner glass-card scroll-hidden" style="max-width:700px;margin:0 auto">
       <div class="cta-orb"></div>
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;justify-content:center">
-        <div style="width:52px;height:52px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#000;flex-shrink:0">SG</div>
+        <div style="width:52px;height:52px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#07050a;flex-shrink:0">SG</div>
         <div>
           <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800">SAI GANESH</div>
           <div style="font-size:11.5px;color:rgba(255,255,255,0.45);margin-top:2px">Creator &amp; Developer · InterviewAI</div>
@@ -421,15 +490,15 @@
       <h2 class="cta-title" style="font-size:21px">Get in Touch</h2>
       <p style="font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.65;position:relative">Interested in Enterprise plans, collaboration, or just want to say hello? Reach out directly.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:18px;position:relative">
-        <a href="mailto:saiganesh68n@gmail.com" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(0,229,255,0.12)'" onmouseout="this.style.background='rgba(0,229,255,0.06)'">
+        <a href="mailto:saiganesh68n@gmail.com" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(255,90,40,0.06);border:1px solid rgba(255,90,40,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(255,90,40,0.12)'" onmouseout="this.style.background='rgba(255,90,40,0.06)'">
           <span style="font-size:17px">📧</span>
           <div><div style="font-weight:600;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Email</div>saiganesh68n@gmail.com</div>
         </a>
-        <a href="tel:+919391594051" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(16,185,129,0.12)'" onmouseout="this.style.background='rgba(16,185,129,0.06)'">
+        <a href="tel:+919391594051" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(34,197,94,0.12)'" onmouseout="this.style.background='rgba(34,197,94,0.06)'">
           <span style="font-size:17px">📱</span>
           <div><div style="font-weight:600;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">Phone / WhatsApp</div>+91 93915 94051</div>
         </a>
-        <a href="https://github.com/sai68n" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(124,58,237,0.12)'" onmouseout="this.style.background='rgba(124,58,237,0.06)'">
+        <a href="https://github.com/sai68n" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:9px;padding:13px;border-radius:11px;background:rgba(255,180,0,0.06);border:1px solid rgba(255,180,0,0.14);color:#fff;text-decoration:none;font-size:12.5px;transition:background 0.2s" onmouseover="this.style.background='rgba(255,180,0,0.12)'" onmouseout="this.style.background='rgba(255,180,0,0.06)'">
           <span style="font-size:17px">💻</span>
           <div><div style="font-weight:600;font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">GitHub</div>github.com/sai68n</div>
         </a>
@@ -453,6 +522,10 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           Start Analyzing Now — It's Free
         </button>
+        <button class="btn-cta-secondary" id="ctaTutorBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Try the Speaking Tutor
+        </button>
       </div>
     </div>
   </section>
@@ -469,9 +542,9 @@
               <path d="M9 16 L12 12 L16 20 L20 10 L23 16" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <span style="font-family:var(--font-display);font-weight:700;font-size:15px">Interview<span style="color:var(--cyan)">AI</span></span>
+          <span style="font-family:var(--font-display);font-weight:700;font-size:15px">Interview<span style="color:var(--orange)">AI</span></span>
         </a>
-        <p class="footer-tagline">AI-powered interview coaching for the next generation of candidates.</p>
+        <p class="footer-tagline">AI-powered interview coaching and live speaking practice for the next generation of candidates.</p>
         <div class="creator-badge">
           <div class="cb-dot"></div>
           Created by <strong>SAI GANESH</strong>&nbsp;·&nbsp;<span style="opacity:0.55">sai68n</span>
@@ -492,10 +565,11 @@
       <div class="footer-links-group">
         <div class="footer-col">
           <div class="footer-col-title">Platform</div>
-          <a href="index.html"        class="footer-link">Analyze Interview</a>
-          <a href="dashboard.html"    class="footer-link">Dashboard</a>
-          <a href="history.html"      class="footer-link">History</a>
-          <a href="leaderboard.html"  class="footer-link">Leaderboard</a>
+          <a href="index.html"          class="footer-link">Analyze Interview</a>
+          <a href="speaking_practice.html" class="footer-link">Speaking Tutor</a>
+          <a href="dashboard.html"      class="footer-link">Dashboard</a>
+          <a href="history.html"        class="footer-link">History</a>
+          <a href="leaderboard.html"    class="footer-link">Leaderboard</a>
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Account</div>
@@ -516,8 +590,8 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© 2025 InterviewAI. Built by <strong style="color:var(--cyan)">Sai Ganesh</strong>. All rights reserved.</span>
-      <span class="footer-powered">Built with Whisper · FastAPI · MongoDB</span>
+      <span>© 2025 InterviewAI. Built by <strong style="color:var(--orange)">Sai Ganesh</strong>. All rights reserved.</span>
+      <span class="footer-powered">Built with Whisper · FastAPI · Gemini · MongoDB</span>
     </div>
 
     <div id="privacy" style="display:none"></div>
@@ -526,7 +600,7 @@
 
   <!-- ── Privacy Modal ── -->
   <div id="privacyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9000;overflow-y:auto;padding:40px 16px">
-    <div style="max-width:660px;margin:0 auto;background:#0c1220;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px">
+    <div style="max-width:660px;margin:0 auto;background:#0c090f;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
         <h2 style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800">Privacy Policy</h2>
         <button onclick="document.getElementById('privacyModal').style.display='none'" style="background:rgba(255,255,255,0.07);border:none;color:#fff;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:14px">✕</button>
@@ -536,6 +610,7 @@
         <p style="margin-bottom:10px">InterviewAI is built and maintained by Sai Ganesh. We respect your privacy.</p>
         <p style="margin-bottom:8px"><strong style="color:#fff">Data we collect:</strong> Email, name, and interview performance data you voluntarily submit.</p>
         <p style="margin-bottom:8px"><strong style="color:#fff">Audio data:</strong> Speech recordings are sent to our backend solely for analysis and are not stored permanently.</p>
+        <p style="margin-bottom:8px"><strong style="color:#fff">Tutor conversations:</strong> Speaking Tutor conversations are sent to our AI provider to generate responses and are not stored permanently.</p>
         <p style="margin-bottom:8px"><strong style="color:#fff">Your rights:</strong> You can delete your account and all associated data at any time from the Profile page.</p>
         <p><strong style="color:#fff">Contact:</strong> saiganesh68n@gmail.com</p>
       </div>
@@ -544,7 +619,7 @@
 
   <!-- ── Terms Modal ── -->
   <div id="termsModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:9000;overflow-y:auto;padding:40px 16px">
-    <div style="max-width:660px;margin:0 auto;background:#0c1220;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px">
+    <div style="max-width:660px;margin:0 auto;background:#0c090f;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:30px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
         <h2 style="font-family:'Syne',sans-serif;font-size:19px;font-weight:800">Terms of Service</h2>
         <button onclick="document.getElementById('termsModal').style.display='none'" style="background:rgba(255,255,255,0.07);border:none;color:#fff;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:14px">✕</button>
@@ -560,7 +635,6 @@
   </div>
 
   <script>
-    // ── Modal links ──────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('a[href="#privacy"]')?.addEventListener('click', e => {
         e.preventDefault();
@@ -571,7 +645,6 @@
         document.getElementById('termsModal').style.display = 'block';
       });
 
-      // ── Mobile drawer ──────────────────────────────────────
       const btn      = document.getElementById('navMenuBtn');
       const drawer   = document.getElementById('navDrawer');
       const backdrop = document.getElementById('navBackdrop');
@@ -582,14 +655,12 @@
         drawer.setAttribute('aria-hidden', 'false');
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
-        // animate hamburger → X
         if (bars) {
           bars[0].style.transform = 'translateY(7px) rotate(45deg)';
           bars[1].style.opacity   = '0';
           bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
         }
       }
-
       function closeDrawer() {
         drawer.classList.remove('open');
         drawer.setAttribute('aria-hidden', 'true');
@@ -610,13 +681,11 @@
         el.addEventListener('click', closeDrawer);
       });
 
-      // ── Scroll: navbar style ───────────────────────────────
       const navbar = document.getElementById('navbar');
       window.addEventListener('scroll', () => {
         navbar?.classList.toggle('scrolled', window.scrollY > 20);
       }, { passive: true });
 
-      // ── Scroll-reveal ──────────────────────────────────────
       const obs = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
       }, { threshold: 0.12 });

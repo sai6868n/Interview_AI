@@ -11,3 +11,4 @@ librosa
 soundfile
 textblob
 python-multipart
+httpx

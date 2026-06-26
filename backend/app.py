@@ -8,6 +8,8 @@ from speech import extract_speech_features
 import os
 import uuid
 import asyncio
+import httpx
+from typing import List
 
 app = FastAPI()
 
@@ -36,6 +38,13 @@ app.add_middleware(
 MAX_CONCURRENT_TRANSCRIPTIONS = 1  # raise to 2-3 later if RAM allows
 transcription_semaphore = asyncio.Semaphore(MAX_CONCURRENT_TRANSCRIPTIONS)
 
+# ── Gemini config (Speaking Practice tutor) ─────────────────────
+# Set GEMINI_API_KEY in Railway → your service → Variables.
+# Never hardcode the key here.
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+
 
 class Candidate(BaseModel):
     Speaking_Rate: float
@@ -55,6 +64,17 @@ class Candidate(BaseModel):
 
     Interview_Difficulty: int
     Role_Type: int
+
+
+# ── Speaking Practice chat models ────────────────────────────────
+class ChatMessage(BaseModel):
+    role: str          # "user" or "assistant"
+    content: str
+
+
+class ChatRequest(BaseModel):
+    system: str
+    messages: List[ChatMessage]
 
 
 @app.post("/predict")
@@ -86,6 +106,54 @@ async def analyze_audio(file: UploadFile = File(...)):
     finally:
         if os.path.exists(file_path):
             os.remove(file_path)
+
+
+# ── Speaking Practice chat endpoint ──────────────────────────────
+# Proxies to Gemini so the API key never reaches the browser.
+# Retries on 429 (rate limit) with exponential backoff: 1s, 2s, 4s.
+@app.post("/chat")
+async def chat(req: ChatRequest):
+    if not GEMINI_API_KEY:
+        return {"error": "GEMINI_API_KEY not set on the backend"}
+
+    contents = [
+        {
+            "role": "model" if m.role == "assistant" else "user",
+            "parts": [{"text": m.content}],
+        }
+        for m in req.messages
+    ]
+
+    payload = {
+        "system_instruction": {"parts": [{"text": req.system}]},
+        "contents": contents,
+        "generationConfig": {"maxOutputTokens": 1000, "temperature": 0.8},
+    }
+
+    max_retries = 3
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        for attempt in range(max_retries + 1):
+            resp = await client.post(GEMINI_URL, params={"key": GEMINI_API_KEY}, json=payload)
+
+            if resp.status_code == 200:
+                data = resp.json()
+                text = (
+                    data.get("candidates", [{}])[0]
+                    .get("content", {})
+                    .get("parts", [{}])[0]
+                    .get("text", "")
+                )
+                return {"content": [{"type": "text", "text": text}]}
+
+            if resp.status_code == 429 and attempt < max_retries:
+                await asyncio.sleep(2 ** attempt)
+                continue
+
+            try:
+                err_msg = resp.json().get("error", {}).get("message", "Gemini API error")
+            except Exception:
+                err_msg = "Gemini API error"
+            return {"error": err_msg}
 
 
 @app.get("/")

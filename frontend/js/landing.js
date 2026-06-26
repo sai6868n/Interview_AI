@@ -125,7 +125,7 @@ function initParticles() {
       p.x+=p.vx; p.y+=p.vy;
       if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
       ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,245,255,${p.alpha})`; ctx.fill();
+      ctx.fillStyle=`rgba(255,90,40,${p.alpha})`; ctx.fill();
     });
     requestAnimationFrame(draw);
   }
@@ -145,8 +145,8 @@ function initCarousel() {
   const track = document.getElementById('carouselTrack');
   const dots   = document.querySelectorAll('.cdot');
   if (!track) return;
-  const SLIDE_W   = 300 + 20;
-  const TOTAL_REAL = 8;
+  const SLIDE_W   = 288 + 18;
+  const TOTAL_REAL = 9;
   let current = 0, autoTimer;
 
   function goTo(idx) {
@@ -225,11 +225,11 @@ function renderLeaderboardPreview() {
       <div class="lb-row">
         <span class="lb-rank">${rankEmojis[i] || '#'+(i+1)}</span>
         <span class="lb-name">${e.name || 'Anonymous'}</span>
-        <span class="lb-conf" style="color:var(--cyan)">${Math.round(e.conf||0)}%</span>
+        <span class="lb-conf" style="color:var(--orange)">${Math.round(e.conf||0)}%</span>
         <span class="lb-result" style="color:${isSelected?'var(--green)':'var(--pink)'}">
           ${isSelected ? '✓ Selected' : '✗ Not Selected'}
         </span>
-        <span class="lb-streak" style="color:var(--yellow)">🔥 ${e.streak||0}d</span>
+        <span class="lb-streak" style="color:var(--gold)">🔥 ${e.streak||0}d</span>
       </div>`;
   }).join('');
 }
@@ -290,9 +290,14 @@ function initScrollAnimations() {
 document.addEventListener('DOMContentLoaded', () => {
   renderNavAuthState();
 
-  // Analyze / CTA buttons — auth guard
+  // Analyzer CTAs — auth guard → interview analyzer
   ['analyzeBtn','ctaAnalyzeBtn'].forEach(id => {
     document.getElementById(id)?.addEventListener('click', () => requireAuth('index_old.html'));
+  });
+
+  // Speaking Tutor CTAs — auth guard → speaking practice page
+  ['speakingPracticeBtn','ctaTutorBtn'].forEach(id => {
+    document.getElementById(id)?.addEventListener('click', () => requireAuth('speaking_practice.html'));
   });
 
   document.querySelectorAll('a[href="index.html"]').forEach(a => {
